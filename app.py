@@ -3,18 +3,20 @@ import json
 import os
 from rapidfuzz import process
 import pandas as pd
+import requests
 
 # === File Paths ===
-DATA_FOLDER = "/Users/mathildekrafft/Desktop/class SA 2025/Text mining/Insights from Text Data 2025 Day 1/Rmd files"
-FUNCTIONS_FILE = os.path.join(DATA_FOLDER, "functions_clean_expanded.json")
-CODEBLOCKS_FILE = os.path.join(DATA_FOLDER, "codeblocks_clean(1).json")
 
-# === Load JSON Files ===
-with open(FUNCTIONS_FILE, "r", encoding="utf-8") as f:
-    functions_data = json.load(f)
+# GitHub raw URLs
+FUNCTIONS_URL = "https://raw.githubusercontent.com/Mathildekrafft2001/text-mining-app/main/functions_clean_expanded.json"
+CODEBLOCKS_URL = "https://raw.githubusercontent.com/Mathildekrafft2001/text-mining-app/main/codeblocks_clean.json"
 
-with open(CODEBLOCKS_FILE, "r", encoding="utf-8") as f:
-    codeblocks_data = json.load(f)
+
+
+# Load JSON from GitHub
+functions_data = requests.get(FUNCTIONS_URL).json()
+codeblocks_data = requests.get(CODEBLOCKS_URL).json()
+
 
 # === Build Function Lookup ===
 functions_lookup = {item["function"]: item for item in functions_data}
@@ -40,14 +42,14 @@ df = pd.DataFrame(merged_data)
 
 # === Streamlit App ===
 st.set_page_config(page_title="R Function Search", layout="wide")
-st.title("🔍 R Function Search with Fuzzy Matching")
+st.title("Text Mining : R Function search app 🔍")
 
 # === Sidebar Filters ===
 packages = sorted(df["package"].dropna().unique())
-selected_package = st.sidebar.selectbox("📦 Filter by Package", ["All"] + packages)
+selected_package = st.sidebar.selectbox("Filter by Package", ["All"] + packages)
 
 # === Search Input ===
-query = st.text_input("🔎 Enter function name (fuzzy search):")
+query = st.text_input("🧚 Enter function name:")
 
 # === Apply Package Filter ===
 filtered_df = df if selected_package == "All" else df[df["package"] == selected_package]
@@ -71,9 +73,11 @@ if results:
         **Explanation:** {row['explanation']}  
         **Code Examples:**  
         """)
-        for code in row['examples']:
+        
+        for code in row['examples'][:3]:
             st.code(code, language='r')
         st.markdown("---")
+
 else:
     if query:
         st.warning("No matches found. Try another keyword.")

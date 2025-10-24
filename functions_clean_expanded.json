@@ -790,11 +790,6 @@
     "explanation": "`melt()` is an R function. Refer to the package documentation for details and examples."
   },
   {
-    "function": "n",
-    "package": "unknown",
-    "explanation": "`n()` is an R function. Refer to the package documentation for details and examples."
-  },
-  {
     "function": "names",
     "package": "unknown",
     "explanation": "`names()` is an R function. Refer to the package documentation for details and examples."
