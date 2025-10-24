@@ -1,0 +1,786 @@
+[
+  {
+    "code": "complaints |> group_by(product) |> summarize(n = n()) |> ungroup() |> arrange(-n)",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Groups rows and counts observations per group. Sorts the results in descending order. Overall: Performs tidy data manipulation to prepare results."
+  },
+  {
+    "code": "complaints2class <- complaints |>\n  mutate(product = factor(if_else(\n    product == paste(\"Credit reporting, credit repair services,\",\n                     \"or other personal consumer reports\"),\n    \"Credit\", \"Other\"\n  )))\ntable(complaints2class$product)",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Creates or modifies columns using mutate(). Overall: Performs tidy data manipulation to prepare results."
+  },
+  {
+    "code": "set.seed(1234)\ncomplaints_split <- initial_split(complaints2class, strata = product)\ncomplaints_train <- training(complaints_split)\ncomplaints_test <- testing(complaints_split)\ndim(complaints_train)\ndim(complaints_test)",
+    "explanation": "Splits data into training and testing sets. Extracts the training/testing portion from the split."
+  },
+  {
+    "code": "complaints_rec <-\n  recipe(\n    product ~ consumer_complaint_narrative,\n    data = complaints_train)",
+    "explanation": "Defines a preprocessing recipe (inputs, targets, and steps) for modeling. Overall: Builds and evaluates a machine learning workflow."
+  },
+  {
+    "code": "complaints_rec <- complaints_rec |>\n  step_tokenize(consumer_complaint_narrative) |>\n  step_tokenfilter(consumer_complaint_narrative, max_tokens = 1e3) |>\n  step_tfidf(consumer_complaint_narrative)",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Filters rows that meet given conditions. Tokenizes text within the recipe. Keeps only the most frequent tokens to reduce sparsity. Creates TF-IDF features from token counts. Overall: Preprocesses text for analysis or modeling."
+  },
+  {
+    "code": "complaint_wf <- workflow() |>\n  add_recipe(complaints_rec)",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Defines a preprocessing recipe (inputs, targets, and steps) for modeling. Bundles the recipe and model into a workflow for clean training. Attaches the preprocessing recipe to the workflow. Overall: Builds and evaluates a machine learning workflow."
+  },
+  {
+    "code": "library(discrim)\nnb_spec <- naive_Bayes() |>\n  set_mode(\"classification\") |>\n  set_engine(\"naivebayes\")\nnb_spec",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Specifies a Naïve Bayes classifier (assumes conditional independence). Sets the model mode to classification. Chooses the underlying library/engine for the model."
+  },
+  {
+    "code": "nb_fit <- complaint_wf |>\n  add_model(nb_spec) |>\n  fit(data = complaints_train)",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Attaches the model specification to the workflow. Fits the model/workflow on the training data. Overall: Builds and evaluates a machine learning workflow."
+  },
+  {
+    "code": "load(\"nb_fit.Rda\")",
+    "explanation": "Loads a pre-saved R object from an .Rda file to skip heavy computations."
+  },
+  {
+    "code": "set.seed(234)\ncomplaints_folds <- vfold_cv(complaints_train)",
+    "explanation": "Creates v-fold cross-validation folds. Overall: Builds and evaluates a machine learning workflow."
+  },
+  {
+    "code": "nb_wf <- workflow() |>\n  add_recipe(complaints_rec) |>\n  add_model(nb_spec)",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Defines a preprocessing recipe (inputs, targets, and steps) for modeling. Bundles the recipe and model into a workflow for clean training. Attaches the preprocessing recipe to the workflow. Attaches the model specification to the workflow. Overall: Builds and evaluates a machine learning workflow."
+  },
+  {
+    "code": "nb_rs <- fit_resamples(\n  nb_wf,\n  complaints_folds,\n  control = control_resamples(save_pred = TRUE)\n)",
+    "explanation": "Refits the workflow across resamples and saves predictions/metrics."
+  },
+  {
+    "code": "load(\"nb_rs.Rda\")",
+    "explanation": "Loads a pre-saved R object from an .Rda file to skip heavy computations."
+  },
+  {
+    "code": "nb_rs_metrics <- collect_metrics(nb_rs)\nnb_rs_metrics",
+    "explanation": "Collects evaluation metrics (e.g., accuracy, rmse, roc_auc) from resamples. Overall: Builds and evaluates a machine learning workflow."
+  },
+  {
+    "code": "nb_rs_predictions <- collect_predictions(nb_rs)\nnb_rs_predictions |>\n  group_by(id) |>\n  roc_curve(truth = product, .pred_Credit) |> autoplot() +\n  labs(\n    color = NULL,\n    title = \"ROC curve for US Consumer Finance Complaints\",\n    subtitle = \"Each resample fold is shown in a different color\"\n  )",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Collects out-of-fold predictions from resamples for plotting/analysis. Computes points for the ROC curve (TPR vs FPR). Plots ROC curves for each resample fold. Adds a title, subtitle, and axis labels to the plot. Overall: Performs tidy data manipulation to prepare results. Builds and evaluates a machine learning workflow. Visualizes results with …"
+  },
+  {
+    "code": "nb_rs_predictions <- collect_predictions(nb_rs)\nnb_rs_predictions |>\n  group_by(id) |>\n  roc_curve(truth = product, .pred_Credit) |>\n  autoplot() +\n  labs(\n    color = NULL,\n    title = \"ROC curve for US Consumer Finance Complaints\",\n    subtitle = \"Each resample fold is shown in a different color\"\n  )",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Collects out-of-fold predictions from resamples for plotting/analysis. Computes points for the ROC curve (TPR vs FPR). Plots ROC curves for each resample fold. Adds a title, subtitle, and axis labels to the plot. Overall: Performs tidy data manipulation to prepare results. Builds and evaluates a machine learning workflow. Visualizes results with …"
+  },
+  {
+    "code": "conf_mat_resampled(nb_rs, tidy = FALSE) |>\n  autoplot(type = \"heatmap\")",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Shows the average confusion matrix across resamples. Overall: Visualizes results with ggplot2."
+  },
+  {
+    "code": "null_classification <- null_model() |>\n  set_engine(\"parsnip\") |>\n  set_mode(\"classification\")\nnull_rs <- workflow() |>\n  add_recipe(complaints_rec) |>\n  add_model(null_classification) |>\n  fit_resamples(\n    complaints_folds,\n    control = control_resamples(save_pred = TRUE)\n  )",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Defines a preprocessing recipe (inputs, targets, and steps) for modeling. Bundles the recipe and model into a workflow for clean training. Attaches the preprocessing recipe to the workflow. Attaches the model specification to the workflow. Sets the model mode to classification. Chooses the underlying library/engine for the model. Defines a baseline …"
+  },
+  {
+    "code": "null_rs |> collect_metrics()",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Collects evaluation metrics (e.g., accuracy, rmse, roc_auc) from resamples. Overall: Builds and evaluates a machine learning workflow."
+  },
+  {
+    "code": "conf_mat_resampled(null_rs, tidy = FALSE)",
+    "explanation": "Shows the average confusion matrix across resamples."
+  },
+  {
+    "code": "install.packages(\"keras\")\ninstall_keras()",
+    "explanation": "R code performing data wrangling/modeling steps."
+  },
+  {
+    "code": "glove6b <- embedding_glove6b(dir = \"GloVe/\",\n                            manual_download = TRUE)",
+    "explanation": "R code performing data wrangling/modeling steps."
+  },
+  {
+    "code": "glove6b[1:10, 1:6]",
+    "explanation": "R code performing data wrangling/modeling steps."
+  },
+  {
+    "code": "set.seed(3414156); glove6b[sample(1:400000, 10), 1:6]",
+    "explanation": "R code performing data wrangling/modeling steps."
+  },
+  {
+    "code": "tidy_glove <- glove6b |>\n  pivot_longer(contains(\"d\"), names_to = \"dimension\") |>\n  rename(item1 = token)\ntidy_glove",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Renames columns for clarity. Converts wide data to long, tidy format (key-value pairs)."
+  },
+  {
+    "code": "nearest_neighbors <- function(df, token) {\n  df |>\n    widely(\n      ~ {\n        y <- .[rep(token, nrow(.)), ]\n        res <- rowSums(. * y) /\n          (sqrt(rowSums(. ^ 2)) * sqrt(sum(.[token, ] ^ 2)))\n        matrix(res, ncol = 1, dimnames = list(x = names(res)))\n      },\n      sort = TRUE,\n      maximum_size = NULL\n    )(item1, dimension, value) |>\n    select(-item2)\n}",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Keeps or reorders selected columns."
+  },
+  {
+    "code": "tidy_glove |> nearest_neighbors(\"tree\")",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right."
+  },
+  {
+    "code": "my.tree <- glove6b[glove6b$token == \"tree\", 2:51]\nmy.pine <- glove6b[glove6b$token == \"pine\", 2:51]\n\nsum(my.tree * my.pine) / (sqrt(sum(my.tree^2)) * sqrt(sum(my.pine^2)))",
+    "explanation": "R code performing data wrangling/modeling steps."
+  },
+  {
+    "code": "cosine_similarity <- function(matrix, vector) {\n  dot_product <- matrix %*% vector\n  matrix_magnitude <- sqrt(rowSums(matrix^2))\n  vector_magnitude <- sqrt(sum(vector^2))\n  similarity <- dot_product / (matrix_magnitude * vector_magnitude)\n  return(similarity)\n}",
+    "explanation": "R code performing data wrangling/modeling steps. Overall: Creates word/document embeddings from co-occurrence statistics."
+  },
+  {
+    "code": "nearest_neighbors_2 <- function(df, vec, exclude_tokens = NULL) {\n  word_vectors <- df |> select(-token) |> as.matrix()\n  similarities <- cosine_similarity(word_vectors, vec)\n  df$similarity <- similarities\n  # If there are tokens to exclude, apply the filter\n  if (!is.null(exclude_tokens)) {\n    df <- df |> filter(!token %in% exclude_tokens)\n  }\n  # Find the nearest neighbor\n  nearest_neighbor <- df |>\n    arrange(desc(similarity)) |>\n    head(1)\n  return(nearest_neighbor)\n}",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Sorts the results in descending order. Keeps or reorders selected columns. Filters rows that meet given conditions. Overall: Performs tidy data manipulation to prepare results."
+  },
+  {
+    "code": "king_vector <- glove6b |> filter(token == \"king\") |> select(-token) |> as.numeric()\nman_vector <- glove6b |> filter(token == \"man\") |> select(-token) |> as.numeric()\nwoman_vector <- glove6b |> filter(token == \"woman\") |> select(-token) |> as.numeric()",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Keeps or reorders selected columns. Filters rows that meet given conditions."
+  },
+  {
+    "code": "result_vector <- king_vector - man_vector + woman_vector\nexclude_tokens <- c(\"king\", \"man\", \"woman\")",
+    "explanation": "R code performing data wrangling/modeling steps."
+  },
+  {
+    "code": "my_result <- nearest_neighbors_2(glove6b, result_vector, exclude_tokens)\nmy_result[, 1:5]",
+    "explanation": "R code performing data wrangling/modeling steps."
+  },
+  {
+    "code": "paris_vector <- glove6b |> filter(token == \"paris\") |> select(-token) |> as.numeric()\nfrance_vector <- glove6b |> filter(token == \"france\") |> select(-token) |> as.numeric()\npoland_vector <- glove6b |> filter(token == \"poland\") |> select(-token) |> as.numeric()\nexclude_tokens <- c(\"paris\", \"france\", \"poland\")\nresult_vector <- paris_vector - france_vector + poland_vector\nnearest_neighbors_2(glove6b, result_vector, exclude_tokens)[, 1:5]",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Keeps or reorders selected columns. Filters rows that meet given conditions."
+  },
+  {
+    "code": "complaints <- read_csv(\"complaints.csv.gz\")",
+    "explanation": "Loads data from file into a tibble for analysis."
+  },
+  {
+    "code": "tidy_complaints <- complaints |> select(complaint_id, consumer_complaint_narrative) |>\n  unnest_tokens(word, consumer_complaint_narrative) |> add_count(word) |>\n  filter(n >= 50) |> select(-n)\nnested_words <- tidy_complaints |> nest(words = c(word))\nnested_words",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Keeps or reorders selected columns. Filters rows that meet given conditions. Counts rows by key(s); shorthand for group_by + summarize(n = n()). Tokenizes text into one-token-per-row for text mining. Overall: Preprocesses text for analysis or modeling."
+  },
+  {
+    "code": "slide_windows <- function(tbl, window_size) {\n  skipgrams <- slider::slide(tbl, ~.x, .after = window_size - 1,\n    .step = 1, .complete = TRUE)\n  safe_mutate <- safely(mutate)\n  out <- map2(skipgrams,\n              1:length(skipgrams),\n              ~ safe_mutate(.x, window_id = .y))\n  out |> transpose() |> pluck(\"result\") |>\n    compact() |> bind_rows()\n}",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Creates or modifies columns using mutate(). Overall: Performs tidy data manipulation to prepare results."
+  },
+  {
+    "code": "future::plan(multisession)\n\ntidy_pmi <- nested_words |>\n  mutate(words = furrr::future_map(words, slide_windows, 4L)) |>\n  unnest(words) |> unite(window_id, complaint_id, window_id) |>\n  pairwise_pmi(word, window_id)",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Creates or modifies columns using mutate(). Combines multiple columns into a single column. Computes pointwise mutual information for word co-occurrence within a sliding window. Enables parallel processing using the future framework. Runs mapping in parallel to speed up independent tasks. Overall: Performs tidy data manipulation to prepare results. …"
+  },
+  {
+    "code": "load(\"tidy_pmi.Rda\")",
+    "explanation": "Loads a pre-saved R object from an .Rda file to skip heavy computations."
+  },
+  {
+    "code": "tidy_pmi |> filter(pmi > 10.6 & pmi < 10.7)",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Filters rows that meet given conditions."
+  },
+  {
+    "code": "tidy_word_vectors <- tidy_pmi |>\n  widely_svd(item1, item2, pmi, nv = 100, maxit = 1000)\ntidy_word_vectors",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Performs SVD on pairwise data to produce low-dimensional word vectors (embeddings). Overall: Creates word/document embeddings from co-occurrence statistics."
+  },
+  {
+    "code": "complaints_embedding <- tidy_word_vectors |>\n  pivot_wider(names_from = dimension, values_from = value)\ndim(complaints_embedding)",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Converts long data to wide format (one column per key)."
+  },
+  {
+    "code": "tidy_word_vectors |> nearest_neighbors(\"error\")",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right."
+  },
+  {
+    "code": "tidy_word_vectors |> nearest_neighbors(\"month\")",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right."
+  },
+  {
+    "code": "tidy_word_vectors |> filter(dimension <= 12) |>\n  group_by(dimension) |> top_n(12, abs(value)) |>\n  ungroup() |>\n  mutate(item1 = reorder_within(item1, value, dimension)) |>\n  ggplot(aes(item1, value, fill = dimension)) +\n  geom_col(alpha = 0.8, show.legend = FALSE) +\n  facet_wrap(~dimension, scales = \"free_y\", ncol = 4) +\n  scale_x_reordered() + coord_flip()",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Creates or modifies columns using mutate(). Filters rows that meet given conditions. Creates a ggplot; layers like geom_point/geom_col add marks, labs() sets titles/labels. Adds a geometric layer (points/bars) to the plot. Creates small multiples by facet. Flips axes to make horizontal plots. Fixes ordering when using reorder_within() across facets. …"
+  },
+  {
+    "code": "tidy_word_vectors |> filter(dimension <= 12) |>\n  group_by(dimension) |> top_n(12, abs(value)) |>\n  ungroup() |>\n  mutate(item1 = reorder_within(item1, value, dimension)) |>\n  ggplot(aes(item1, value, fill = dimension)) +\n  geom_col(alpha = 0.8, show.legend = FALSE) +\n  facet_wrap(~dimension, scales = \"free_y\", ncol = 4) +\n  scale_x_reordered() + coord_flip()",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Creates or modifies columns using mutate(). Filters rows that meet given conditions. Creates a ggplot; layers like geom_point/geom_col add marks, labs() sets titles/labels. Adds a geometric layer (points/bars) to the plot. Creates small multiples by facet. Flips axes to make horizontal plots. Fixes ordering when using reorder_within() across facets. …"
+  },
+  {
+    "code": "word_matrix <- tidy_complaints |> count(complaint_id, word) |>\n  cast_sparse(complaint_id, word, n)",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Counts rows by key(s); shorthand for group_by + summarize(n = n())."
+  },
+  {
+    "code": "embedding_matrix <- tidy_word_vectors |>\n  cast_sparse(item1, dimension, value)",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right."
+  },
+  {
+    "code": "doc_matrix <- word_matrix %*% embedding_matrix[-7475, ]\ndim(doc_matrix)",
+    "explanation": "R code performing data wrangling/modeling steps. Overall: Creates word/document embeddings from co-occurrence statistics."
+  },
+  {
+    "code": "library(topicmodels)\ndata(\"AssociatedPress\")\nAssociatedPress",
+    "explanation": "R code performing data wrangling/modeling steps."
+  },
+  {
+    "code": "ap_lda <- LDA(AssociatedPress, k = 2, control = list(seed = 1234))\nap_lda",
+    "explanation": "Fits a Latent Dirichlet Allocation topic model to discover topics. Overall: Discovers topics in documents using LDA."
+  },
+  {
+    "code": "library(tidytext)\nap_topics <- tidy(ap_lda, matrix = \"beta\")\nap_topics",
+    "explanation": "Extracts per-topic word probabilities (beta) from the LDA model."
+  },
+  {
+    "code": "ap_top_terms <- ap_topics |> group_by(topic) |> slice_max(beta, n = 10) |>\n  ungroup() |> arrange(topic, -beta)\nap_top_terms |> mutate(term = reorder_within(term, beta, topic)) |>\n  ggplot(aes(beta, term, fill = factor(topic))) + geom_col(show.legend = FALSE) +\n  facet_wrap(~ topic, scales = \"free\") + scale_y_reordered()",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Creates or modifies columns using mutate(). Sorts the results in ascending order. Creates a ggplot; layers like geom_point/geom_col add marks, labs() sets titles/labels. Adds a geometric layer (points/bars) to the plot. Creates small multiples by facet. Keeps the top terms per topic to inspect themes. Overall: Performs tidy data manipulation to …"
+  },
+  {
+    "code": "beta_wide <- ap_topics |>\n  mutate(topic = paste0(\"topic\", topic)) |>\n  pivot_wider(names_from = topic, values_from = beta) |>\n  filter(topic1 > .001 | topic2 > .001) |> mutate(log_ratio = log2(topic2 / topic1))\nbeta_wide",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Creates or modifies columns using mutate(). Filters rows that meet given conditions. Converts long data to wide format (one column per key). Overall: Performs tidy data manipulation to prepare results."
+  },
+  {
+    "code": "beta_wide |> slice_max(log_ratio, n = 10)",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Keeps the top terms per topic to inspect themes."
+  },
+  {
+    "code": "beta_wide |> slice_min(log_ratio, n = 10)",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right."
+  },
+  {
+    "code": "ap_documents <- tidy(ap_lda, matrix = \"gamma\")\nap_documents |> arrange(document)",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Sorts the results in ascending order. Extracts per-document topic probabilities (gamma) from the LDA model. Overall: Performs tidy data manipulation to prepare results."
+  },
+  {
+    "code": "ap_documents |> filter(document == 6)",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Filters rows that meet given conditions."
+  },
+  {
+    "code": "tidy(AssociatedPress) |> filter(document == 6) |> arrange(-count)",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Sorts the results in descending order. Filters rows that meet given conditions. Overall: Performs tidy data manipulation to prepare results."
+  },
+  {
+    "code": "summary(str_length(scotus_filtered$text))",
+    "explanation": "Uses stringr helpers to detect, replace, trim, or locate patterns in text. Overall: Performs tidy data manipulation to prepare results."
+  },
+  {
+    "code": "scotus_filtered |>\n  mutate(year = as.numeric(year), year = 10 * (year %/% 10)) |>\n  count(year) |> ggplot(aes(year, n)) +\n  geom_col() + labs(x = \"Year\", y = \"Number of opinions per decade\")",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Creates or modifies columns using mutate(). Counts rows by key(s); shorthand for group_by + summarize(n = n()). Creates a ggplot; layers like geom_point/geom_col add marks, labs() sets titles/labels. Adds a geometric layer (points/bars) to the plot. Adds a title, subtitle, and axis labels to the plot. Overall: Performs tidy data manipulation to …"
+  },
+  {
+    "code": "library(tidymodels); set.seed(1234)\nscotus_split <- scotus_filtered |>\n  mutate(year = as.numeric(year),\n         text = str_remove_all(text, \"'\")) |>\n  initial_split()\nscotus_train <- training(scotus_split)\nscotus_test <- testing(scotus_split)",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Creates or modifies columns using mutate(). Splits data into training and testing sets. Extracts the training/testing portion from the split. Uses stringr helpers to detect, replace, trim, or locate patterns in text. Overall: Performs tidy data manipulation to prepare results."
+  },
+  {
+    "code": "library(textrecipes)\nscotus_rec <- recipe(year ~ text, data = scotus_train) |>\n  step_tokenize(text) |>\n  step_tokenfilter(text, max_tokens = 1e3) |>\n  step_tfidf(text) |>\n  step_normalize(all_predictors())",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Filters rows that meet given conditions. Defines a preprocessing recipe (inputs, targets, and steps) for modeling. Tokenizes text within the recipe. Keeps only the most frequent tokens to reduce sparsity. Creates TF-IDF features from token counts. Centers and scales numeric predictors. Overall: Builds and evaluates a machine learning workflow. …"
+  },
+  {
+    "code": "scotus_prep <- prep(scotus_rec)\nscotus_bake <- bake(scotus_prep, new_data = NULL)\ndim(scotus_bake)",
+    "explanation": "R code performing data wrangling/modeling steps."
+  },
+  {
+    "code": "scotus_bake[1:10, c(57, 58, 60:63, 570, 571)]",
+    "explanation": "R code performing data wrangling/modeling steps."
+  },
+  {
+    "code": "scotus_wf <- workflow() |>\n  add_recipe(scotus_rec)\nscotus_wf",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Defines a preprocessing recipe (inputs, targets, and steps) for modeling. Bundles the recipe and model into a workflow for clean training. Attaches the preprocessing recipe to the workflow. Overall: Builds and evaluates a machine learning workflow."
+  },
+  {
+    "code": "svm_spec <- svm_linear() |>\n  set_mode(\"regression\") |>\n  set_engine(\"LiblineaR\")",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Sets the model mode to regression. Chooses the underlying library/engine for the model. Specifies a linear SVM model."
+  },
+  {
+    "code": "svm_fit <- scotus_wf |>\n  add_model(svm_spec) |>\n  fit(data = scotus_train)",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Attaches the model specification to the workflow. Fits the model/workflow on the training data. Overall: Builds and evaluates a machine learning workflow."
+  },
+  {
+    "code": "svm_fit |> extract_fit_parsnip() |> tidy() |> arrange(-estimate)",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Sorts the results in descending order. Overall: Performs tidy data manipulation to prepare results."
+  },
+  {
+    "code": "svm_fit |> extract_fit_parsnip() |> tidy() |> arrange(estimate)",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Sorts the results in ascending order. Overall: Performs tidy data manipulation to prepare results."
+  },
+  {
+    "code": "set.seed(123)\nscotus_folds <- vfold_cv(scotus_train)\nscotus_folds",
+    "explanation": "Creates v-fold cross-validation folds. Overall: Builds and evaluates a machine learning workflow."
+  },
+  {
+    "code": "set.seed(123)\nsvm_rs <- fit_resamples(\n  scotus_wf |> add_model(svm_spec), scotus_folds,\n  control = control_resamples(save_pred = TRUE))",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Attaches the model specification to the workflow. Refits the workflow across resamples and saves predictions/metrics."
+  },
+  {
+    "code": "load(\"svm_rs.Rda\")",
+    "explanation": "Loads a pre-saved R object from an .Rda file to skip heavy computations."
+  },
+  {
+    "code": "svm_rs",
+    "explanation": "R code performing data wrangling/modeling steps."
+  },
+  {
+    "code": "collect_metrics(svm_rs)",
+    "explanation": "Collects evaluation metrics (e.g., accuracy, rmse, roc_auc) from resamples. Overall: Builds and evaluates a machine learning workflow."
+  },
+  {
+    "code": "svm_rs |>\n  collect_predictions() |>\n  ggplot(aes(year, .pred, color = id)) +\n  geom_abline(lty = 2, color = \"gray80\", size = 1.5) +\n  geom_point(alpha = 0.3) +\n  labs(\n    x = \"Truth\",\n    y = \"Predicted year\",\n    color = NULL,\n    title = \"Predicted and true years for Supreme Court opinions\",\n    subtitle = \"Each cross-validation fold is shown in a different color\"\n  )",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Collects out-of-fold predictions from resamples for plotting/analysis. Creates a ggplot; layers like geom_point/geom_col add marks, labs() sets titles/labels. Adds a geometric layer (points/bars) to the plot. Adds a diagonal or custom reference line to compare predictions vs truth. Adds a title, subtitle, and axis labels to the plot. Overall: …"
+  },
+  {
+    "code": "svm_rs |>\n  collect_predictions() |>\n  ggplot(aes(year, .pred, color = id)) +\n  geom_abline(lty = 2, color = \"gray80\", linewidth = 1.5) +\n  geom_point(alpha = 0.3) +\n  labs(\n    x = \"Truth\",\n    y = \"Predicted year\",\n    color = NULL,\n    title = \"Predicted and true years for Supreme Court opinions\",\n    subtitle = \"Each cross-validation fold is shown in a different color\"\n  )",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Collects out-of-fold predictions from resamples for plotting/analysis. Creates a ggplot; layers like geom_point/geom_col add marks, labs() sets titles/labels. Adds a geometric layer (points/bars) to the plot. Adds a diagonal or custom reference line to compare predictions vs truth. Adds a title, subtitle, and axis labels to the plot. Overall: …"
+  },
+  {
+    "code": "null_regression <- null_model() |> set_engine(\"parsnip\") |>\n  set_mode(\"regression\")\nnull_rs <- fit_resamples(scotus_wf |> add_model(null_regression), scotus_folds,\n  metrics = metric_set(rmse)\n)",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Attaches the model specification to the workflow. Sets the model mode to regression. Chooses the underlying library/engine for the model. Defines a baseline model (mean for regression, majority class for classification). Refits the workflow across resamples and saves predictions/metrics. Defines which metrics to compute during resampling."
+  },
+  {
+    "code": "load(\"null_rs.Rda\")",
+    "explanation": "Loads a pre-saved R object from an .Rda file to skip heavy computations."
+  },
+  {
+    "code": "collect_metrics(null_rs)",
+    "explanation": "Collects evaluation metrics (e.g., accuracy, rmse, roc_auc) from resamples. Overall: Builds and evaluates a machine learning workflow."
+  },
+  {
+    "code": "rf_spec <- rand_forest(trees = 1000) |>\n  set_engine(\"ranger\") |>\n  set_mode(\"regression\")\nrf_spec",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Sets the model mode to regression. Chooses the underlying library/engine for the model. Specifies a random forest model."
+  },
+  {
+    "code": "rf_rs <- fit_resamples(\n  scotus_wf |> add_model(rf_spec),\n  scotus_folds,\n  control = control_resamples(save_pred = TRUE)\n)",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Attaches the model specification to the workflow. Refits the workflow across resamples and saves predictions/metrics."
+  },
+  {
+    "code": "load(\"rf_rs.Rda\")",
+    "explanation": "Loads a pre-saved R object from an .Rda file to skip heavy computations."
+  },
+  {
+    "code": "collect_metrics(rf_rs)",
+    "explanation": "Collects evaluation metrics (e.g., accuracy, rmse, roc_auc) from resamples. Overall: Builds and evaluates a machine learning workflow."
+  },
+  {
+    "code": "collect_predictions(rf_rs) |>\n  ggplot(aes(year, .pred, color = id)) +\n  geom_abline(lty = 2, color = \"gray80\", size = 1.5) +\n  geom_point(alpha = 0.3) + labs(\n    x = \"Truth\",\n    y = \"Predicted year\",\n    color = NULL,\n    title = paste(\"Predicted and true years for Supreme Court opinions using\",\n                  \"a random forest model\", sep = \"\\n\"),\n    subtitle = \"Each cross-validation fold is shown in a different color\")",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Collects out-of-fold predictions from resamples for plotting/analysis. Creates a ggplot; layers like geom_point/geom_col add marks, labs() sets titles/labels. Adds a geometric layer (points/bars) to the plot. Adds a diagonal or custom reference line to compare predictions vs truth. Adds a title, subtitle, and axis labels to the plot. Overall: …"
+  },
+  {
+    "code": "collect_predictions(rf_rs) |>\n  ggplot(aes(year, .pred, color = id)) +\n  geom_abline(lty = 2, color = \"gray80\", linewidth = 1.5) +\n  geom_point(alpha = 0.3) + labs(\n    x = \"Truth\",\n    y = \"Predicted year\",\n    color = NULL,\n    title = paste(\"Predicted and true years for Supreme Court opinions using\",\n                  \"a random forest model\", sep = \"\\n\"),\n    subtitle = \"Each cross-validation fold is shown in a different color\")",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Collects out-of-fold predictions from resamples for plotting/analysis. Creates a ggplot; layers like geom_point/geom_col add marks, labs() sets titles/labels. Adds a geometric layer (points/bars) to the plot. Adds a diagonal or custom reference line to compare predictions vs truth. Adds a title, subtitle, and axis labels to the plot. Overall: …"
+  },
+  {
+    "code": "stopword_rec <- function(stopword_name) {\n  recipe(year ~ text, data = scotus_train) |>\n    step_tokenize(text) |>\n    step_stopwords(text, stopword_source = stopword_name) |>\n    step_tokenfilter(text, max_tokens = 1e3) |>\n    step_tfidf(text) |>\n    step_normalize(all_predictors())\n}",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Filters rows that meet given conditions. Removes stop words (very common words) to focus on meaningful terms. Defines a preprocessing recipe (inputs, targets, and steps) for modeling. Tokenizes text within the recipe. Keeps only the most frequent tokens to reduce sparsity. Creates TF-IDF features from token counts. Centers and scales numeric …"
+  },
+  {
+    "code": "svm_wf <- workflow() |>\n  add_model(svm_spec)\nsvm_wf",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Bundles the recipe and model into a workflow for clean training. Attaches the model specification to the workflow. Overall: Builds and evaluates a machine learning workflow."
+  },
+  {
+    "code": "set.seed(123)\nsnowball_rs <- fit_resamples(\n  svm_wf |> add_recipe(stopword_rec(\"snowball\")),\n  scotus_folds)\n\nset.seed(234)\nsmart_rs <- fit_resamples(\n  svm_wf |> add_recipe(stopword_rec(\"smart\")),\n  scotus_folds)\n\nset.seed(345)\nstopwords_iso_rs <- fit_resamples(\n  svm_wf |> add_recipe(stopword_rec(\"stopwords-iso\")),\n  scotus_folds)",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Defines a preprocessing recipe (inputs, targets, and steps) for modeling. Attaches the preprocessing recipe to the workflow. Refits the workflow across resamples and saves predictions/metrics. Overall: Builds and evaluates a machine learning workflow. Preprocesses text for analysis or modeling."
+  },
+  {
+    "code": "load(\"snowball_rs.Rda\")\nload(\"smart_rs.Rda\")\nload(\"stopwords_iso_rs.Rda\")",
+    "explanation": "Loads a pre-saved R object from an .Rda file to skip heavy computations. Overall: Preprocesses text for analysis or modeling."
+  },
+  {
+    "code": "word_counts <- tibble(name = c(\"snowball\", \"smart\", \"stopwords-iso\")) |>\n  mutate(words = map_int(name, ~length(stopwords::stopwords(source = .))))\nword_counts",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Creates or modifies columns using mutate(). Overall: Performs tidy data manipulation to prepare results. Preprocesses text for analysis or modeling."
+  },
+  {
+    "code": "list(snowball = snowball_rs,\n     smart = smart_rs,\n     `stopwords-iso` = stopwords_iso_rs) |>\n  map_dfr(.f = show_best, metric = \"rmse\", .id = \"name\") |>\n  left_join(word_counts, by = \"name\") |>\n  mutate(name = paste0(name, \" (\", words, \" words)\"),\n         name = fct_reorder(name, words)) |>\n  ggplot(aes(name, mean, color = name)) +\n  geom_crossbar(aes(ymin = mean - std_err, ymax = mean + std_err), alpha = 0.6) +\n  geom_point(size = 3, alpha = 0.8) +\n  theme(legend.position = \"none\") +\n  labs(x = NULL, y = \"RMSE\",\n       title = \"Model performance for three stop word lexicons\",\n       subtitle = \"For this data set, the Snowball lexicon performed best\")",
+    "explanation": "Joins two tables keeping all rows from the left table (left join). Uses a dplyr-style pipe to chain steps clearly from left to right. Creates or modifies columns using mutate(). Creates a ggplot; layers like geom_point/geom_col add marks, labs() sets titles/labels. Adds a geometric layer (points/bars) to the plot. Adds a title, subtitle, and axis labels to the plot. Overall: Performs tidy data manipulation to …"
+  },
+  {
+    "code": "list(snowball = snowball_rs,\n     smart = smart_rs,\n     `stopwords-iso` = stopwords_iso_rs) |>\n  map_dfr(.f = show_best, metric = \"rmse\", .id = \"name\") |>\n  left_join(word_counts, by = \"name\") |>\n  mutate(name = paste0(name, \" (\", words, \" words)\"),\n         name = fct_reorder(name, words)) |>\n  ggplot(aes(name, mean, color = name)) +\n  geom_crossbar(aes(ymin = mean - std_err, ymax = mean + std_err), alpha = 0.6) +\n  geom_point(size = 3, alpha = 0.8) +\n  theme(legend.position = \"none\") +\n  labs(x = NULL, y = \"RMSE\",\n       title = \"Model performance for three stop word lexicons\",\n       subtitle = \"For this data set, the Snowball lexicon performed best\")",
+    "explanation": "Joins two tables keeping all rows from the left table (left join). Uses a dplyr-style pipe to chain steps clearly from left to right. Creates or modifies columns using mutate(). Creates a ggplot; layers like geom_point/geom_col add marks, labs() sets titles/labels. Adds a geometric layer (points/bars) to the plot. Adds a title, subtitle, and axis labels to the plot. Overall: Performs tidy data manipulation to …"
+  },
+  {
+    "code": "unique(DSOTM$Song)",
+    "explanation": "R code performing data wrangling/modeling steps."
+  },
+  {
+    "code": "time_song <- DSOTM |> filter(Song == \"Time\") |> mutate(Line = row_number())\ntime_song |> head()",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Creates or modifies columns using mutate(). Filters rows that meet given conditions. Overall: Performs tidy data manipulation to prepare results."
+  },
+  {
+    "code": "library(tidytext)\ntime_song |> unnest_tokens(word, Lyrics)",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Tokenizes text into one-token-per-row for text mining. Overall: Preprocesses text for analysis or modeling."
+  },
+  {
+    "code": "time_song |>\n  unnest_tokens(output = \"2-grams\", input = Lyrics, token = \"ngrams\", n = 2)",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Tokenizes text into one-token-per-row for text mining. Creates n-gram tokens (multi-word phrases). Overall: Preprocesses text for analysis or modeling."
+  },
+  {
+    "code": "DSOTM |> unnest_tokens(word, Lyrics)  |>\n  count(word, sort = TRUE) |>\n  mutate(word = reorder(word, n)) |>\n  filter(n >= 14) |> ggplot(aes(n, word)) + geom_col()",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Creates or modifies columns using mutate(). Filters rows that meet given conditions. Counts rows by key(s); shorthand for group_by + summarize(n = n()). Tokenizes text into one-token-per-row for text mining. Creates a ggplot; layers like geom_point/geom_col add marks, labs() sets titles/labels. Adds a geometric layer (points/bars) to the plot. …"
+  },
+  {
+    "code": "data(stop_words) #to activate the data\ntime_song |> unnest_tokens(word, Lyrics) |>\n  anti_join(stop_words) |> count(word, sort = TRUE) |>\n  mutate(word = reorder(word, n)) |> head()",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Creates or modifies columns using mutate(). Counts rows by key(s); shorthand for group_by + summarize(n = n()). Tokenizes text into one-token-per-row for text mining. Removes stop words (very common words) to focus on meaningful terms. Overall: Performs tidy data manipulation to prepare results. Preprocesses text for analysis or modeling."
+  },
+  {
+    "code": "library(wordcloud);set.seed(31415)\nDSOTM |> unnest_tokens(word, Lyrics) |>\n  anti_join(stop_words) |> count(word) |>\n  with(wordcloud(word, n, min.freq = 2))",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Counts rows by key(s); shorthand for group_by + summarize(n = n()). Tokenizes text into one-token-per-row for text mining. Removes stop words (very common words) to focus on meaningful terms. Draws a word cloud sized by term frequency. Overall: Performs tidy data manipulation to prepare results. Preprocesses text for analysis or modeling."
+  },
+  {
+    "code": "library(tokenizers)\nTime_vector <- as.character(DSOTM$Lyrics[DSOTM$Song == \"Time\"])\ntokenize_words(Time_vector)[1:2]",
+    "explanation": "Tokenizes text into words using tokenizers (returns a list). Overall: Preprocesses text for analysis or modeling."
+  },
+  {
+    "code": "tricky_sentence <- \"Don’t forget you owe the bank $1 million for the house.\"\ntokenize_words(tricky_sentence)\ntokenize_words(tricky_sentence, strip_punct = FALSE)",
+    "explanation": "Tokenizes text into words using tokenizers (returns a list). Overall: Preprocesses text for analysis or modeling."
+  },
+  {
+    "code": "library(quanteda); library(readtext)\npath_data <- system.file(\"extdata/\", package = \"readtext\")\ndat_inaug <- read.csv(paste0(path_data, \"/csv/inaugCorpus.csv\"))\nglimpse(dat_inaug)",
+    "explanation": "R code performing data wrangling/modeling steps."
+  },
+  {
+    "code": "dat_udhr <- readtext(paste0(path_data, \"/txt/UDHR/*\"),\n                     encoding = \"UTF-8\")",
+    "explanation": "R code performing data wrangling/modeling steps."
+  },
+  {
+    "code": "my_text <- time_song$Lyrics[1]\nmy_text\nc(nchar(my_text), stringr::str_length(my_text))",
+    "explanation": "Uses stringr helpers to detect, replace, trim, or locate patterns in text."
+  },
+  {
+    "code": "c(substr(my_text, 5, 10), stringr::str_sub(my_text, 5, 10))\nc(gsub(\"dull\", \"great\", my_text),\n  stringr::str_replace(my_text, \"dull\", \"great\"))",
+    "explanation": "Uses stringr helpers to detect, replace, trim, or locate patterns in text."
+  },
+  {
+    "code": "c(str_detect(my_text, \"dull\"), str_detect(my_text, \"great\"))\nstr_locate_all(my_text, \"m\")",
+    "explanation": "Uses stringr helpers to detect, replace, trim, or locate patterns in text."
+  },
+  {
+    "code": "str_trim(\"  123 \")\nstr_squish(\"   Eliminate  double spaces   \")\nstr_pad(\"123456\", width = 10, side = \"left\", pad = \"0\")",
+    "explanation": "Uses stringr helpers to detect, replace, trim, or locate patterns in text."
+  },
+  {
+    "code": "letters[1:6]\nc(paste(letters[1:6], collapse = \"-\"), str_flatten(letters[1:6], collapse = \"-\"))",
+    "explanation": "Uses stringr helpers to detect, replace, trim, or locate patterns in text."
+  },
+  {
+    "code": "my_text <- c(\"I am 57; You are 26, She is 24.\")\nstr_replace_all(my_text, pattern = \"[:punct:]\", \" \")\nstr_replace_all(my_text, pattern = \"[:digit:]\", \" \")",
+    "explanation": "Uses stringr helpers to detect, replace, trim, or locate patterns in text. Applies regular expressions to clean or detect patterns."
+  },
+  {
+    "code": "my_text <- c(\"I am 57; You are 26, She is 24.\")\nstr_replace_all(my_text, pattern = \"[:lower:]\", \" \")\nstr_replace_all(my_text, pattern = \"[:upper:]\", \" \")",
+    "explanation": "Uses stringr helpers to detect, replace, trim, or locate patterns in text."
+  },
+  {
+    "code": "str_view_all(\"abcde\", pattern = \"ab|d\")",
+    "explanation": "Uses stringr helpers to detect, replace, trim, or locate patterns in text."
+  },
+  {
+    "code": "str_replace_all(\"abcde\", pattern = \"ab|d\", replacement = \"X\")",
+    "explanation": "Uses stringr helpers to detect, replace, trim, or locate patterns in text."
+  },
+  {
+    "code": "str_view_all(\"abcde\", pattern = \"[abe]\")",
+    "explanation": "Uses stringr helpers to detect, replace, trim, or locate patterns in text."
+  },
+  {
+    "code": "str_view_all(\"abcde\", pattern = \"[^abe]\")",
+    "explanation": "Uses stringr helpers to detect, replace, trim, or locate patterns in text."
+  },
+  {
+    "code": "str_view_all(\"abcde\", pattern = \"[a-c]\")",
+    "explanation": "Uses stringr helpers to detect, replace, trim, or locate patterns in text."
+  },
+  {
+    "code": "class(data_char_ukimmig2010)\nlength(data_char_ukimmig2010)\nnames(data_char_ukimmig2010)",
+    "explanation": "R code performing data wrangling/modeling steps."
+  },
+  {
+    "code": "corp_immig <- corpus(data_char_ukimmig2010,\n                     docvars = data.frame(\n                        party = names(data_char_ukimmig2010)))\nprint(corp_immig)",
+    "explanation": "R code performing data wrangling/modeling steps."
+  },
+  {
+    "code": "path_data <- system.file(\"extdata/\", package = \"readtext\")\ndat_inaug <- read.csv(paste0(path_data, \"/csv/inaugCorpus.csv\"))\ncorp_inaug <- corpus(dat_inaug, text_field = \"texts\")\nsummary(corp_inaug)",
+    "explanation": "R code performing data wrangling/modeling steps. Overall: Performs tidy data manipulation to prepare results."
+  },
+  {
+    "code": "docid <- paste(dat_inaug$Year, dat_inaug$FirstName,\n               dat_inaug$President, sep = \" \")\ndocnames(corp_inaug) <- docid\nsummary(corp_inaug)",
+    "explanation": "R code performing data wrangling/modeling steps. Overall: Performs tidy data manipulation to prepare results."
+  },
+  {
+    "code": "corp_tm <- tm::VCorpus(tm::VectorSource(data_char_ukimmig2010))\nclass(corp_tm)\ncorp_quanteda <- corpus(corp_tm)\nclass(corp_quanteda)",
+    "explanation": "R code performing data wrangling/modeling steps."
+  },
+  {
+    "code": "the_wall_tokens <- the_wall |> unnest_tokens(word, Lyrics)\nthe_wall_tokens",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Tokenizes text into one-token-per-row for text mining. Overall: Preprocesses text for analysis or modeling."
+  },
+  {
+    "code": "the_wall_word_freq <- the_wall_tokens |> group_by(word) |>\n  summarize(n = n()) |> ungroup() |> arrange(desc(n))\nthe_wall_word_freq |> head(10)",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Groups rows and counts observations per group. Sorts the results in descending order. Overall: Performs tidy data manipulation to prepare results."
+  },
+  {
+    "code": "the_wall_corpus <- corpus(the_wall, text_field = \"Lyrics\")\nthe_wall_tokens_quanteda <- tokens(the_wall_corpus)\nthe_wall_tokens_quanteda[1:4]",
+    "explanation": "R code performing data wrangling/modeling steps."
+  },
+  {
+    "code": "the_wall_tokens_quanteda <- tokens(the_wall_corpus, remove_punct = TRUE)\nthe_wall_tokens_quanteda[1:4]",
+    "explanation": "R code performing data wrangling/modeling steps."
+  },
+  {
+    "code": "tidy(the_wall_corpus) |> head(6)",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right."
+  },
+  {
+    "code": "library(tokenizers)\nthe_wall_tokens_list <- the_wall$Lyrics |> tokenize_words()\nthe_wall_tokens_list[1:5]",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Tokenizes text into words using tokenizers (returns a list). Overall: Preprocesses text for analysis or modeling."
+  },
+  {
+    "code": "another_brick <- the_wall |> filter(Song == \"Another Brick in the Wall (Part 2)\")\ntokenize_character(another_brick$Lyrics)[1:2]",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Filters rows that meet given conditions. Overall: Preprocesses text for analysis or modeling."
+  },
+  {
+    "code": "tokenize_ngrams(another_brick$Lyrics, n = 2)[1:2]",
+    "explanation": "Creates n-gram tokens (multi-word phrases). Overall: Preprocesses text for analysis or modeling."
+  },
+  {
+    "code": "tokenize_ngrams(another_brick$Lyrics, n = 3)[1:2]",
+    "explanation": "Creates n-gram tokens (multi-word phrases). Overall: Preprocesses text for analysis or modeling."
+  },
+  {
+    "code": "data(stop_words)\nstop_words",
+    "explanation": "R code performing data wrangling/modeling steps."
+  },
+  {
+    "code": "the_wall |> unnest_tokens(word, Lyrics) |>\n  group_by(word) |> summarize(n = n()) |>\n  ungroup() |> arrange(-n) |>  head(10)",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Groups rows and counts observations per group. Sorts the results in descending order. Tokenizes text into one-token-per-row for text mining. Overall: Performs tidy data manipulation to prepare results. Preprocesses text for analysis or modeling."
+  },
+  {
+    "code": "table(stop_words$lexicon)",
+    "explanation": "R code performing data wrangling/modeling steps."
+  },
+  {
+    "code": "the_wall_word_freq <- the_wall |> unnest_tokens(word, Lyrics) |>\n  anti_join(stop_words, by = c(\"word\" = \"word\")) |> group_by(word) |>\n  summarize(n = n()) |> ungroup() |> arrange(-n)\nthe_wall_word_freq |> head(5)",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Groups rows and counts observations per group. Sorts the results in descending order. Tokenizes text into one-token-per-row for text mining. Removes stop words (very common words) to focus on meaningful terms. Overall: Performs tidy data manipulation to prepare results. Preprocesses text for analysis or modeling."
+  },
+  {
+    "code": "my_stop_words <- tibble(\n  word = c(\"gamma\", \" ...\")\n)\nmy_stop_words",
+    "explanation": "R code performing data wrangling/modeling steps."
+  },
+  {
+    "code": "the_wall_word_freq |> head(15) |>\n  mutate(word = reorder(word, n)) |>\n  ggplot(aes(x = n, y = word)) + geom_col() + labs(y = NULL)",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Creates or modifies columns using mutate(). Creates a ggplot; layers like geom_point/geom_col add marks, labs() sets titles/labels. Adds a geometric layer (points/bars) to the plot. Adds a title, subtitle, and axis labels to the plot. Overall: Performs tidy data manipulation to prepare results. Visualizes results with ggplot2."
+  },
+  {
+    "code": "library(wordcloud); set.seed(31415)\nthe_wall_word_freq |> with(wordcloud(word, n, min.freq = 4))",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Draws a word cloud sized by term frequency."
+  },
+  {
+    "code": "library(wordcloud2)\nthe_wall_word_freq |> filter(n > 4) |> wordcloud2()",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Filters rows that meet given conditions."
+  },
+  {
+    "code": "the_wall_corpus <- corpus(the_wall, text_field = \"Lyrics\")",
+    "explanation": "R code performing data wrangling/modeling steps."
+  },
+  {
+    "code": "the_wall_tokens_quanteda <- tokens(\n  the_wall_corpus,\n  remove_punct = TRUE)\nthe_wall_word_freq_quanteda <- tokens_select(\n  the_wall_tokens_quanteda,\n  pattern = stopwords(\"en\"),\n  selection = \"remove\")\ndfmat_the_wall <- dfm(the_wall_word_freq_quanteda)",
+    "explanation": "Keeps or reorders selected columns. Overall: Preprocesses text for analysis or modeling."
+  },
+  {
+    "code": "head(textstat_frequency(dfmat_the_wall), 10)",
+    "explanation": "R code performing data wrangling/modeling steps."
+  },
+  {
+    "code": "set.seed(314156)\nget_sentiments(\"afinn\") |> slice_sample(n = 10)",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Retrieves a sentiment lexicon (e.g., NRC/Bing/AFINN) to tag words with sentiment categories."
+  },
+  {
+    "code": "get_sentiments(\"bing\") |> group_by(sentiment) |>\n  summarize(n = n()) |> arrange(-n)",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Groups rows and counts observations per group. Sorts the results in descending order. Retrieves a sentiment lexicon (e.g., NRC/Bing/AFINN) to tag words with sentiment categories. Overall: Performs tidy data manipulation to prepare results."
+  },
+  {
+    "code": "set.seed(314156); get_sentiments(\"bing\") |> slice_sample(n = 10)",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Retrieves a sentiment lexicon (e.g., NRC/Bing/AFINN) to tag words with sentiment categories."
+  },
+  {
+    "code": "get_sentiments(\"nrc\") |> group_by(sentiment) |>\n  summarize(n = n()) |> arrange(-n)",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Groups rows and counts observations per group. Sorts the results in descending order. Retrieves a sentiment lexicon (e.g., NRC/Bing/AFINN) to tag words with sentiment categories. Overall: Performs tidy data manipulation to prepare results."
+  },
+  {
+    "code": "the_wall_affin <- inner_join(the_wall_tokens, get_sentiments(\"afinn\"),\n  by = c(\"word\" = \"word\")) |> group_by(Song) |>\nsummarize(Sentiment = mean(value)) |> ungroup()\nggplot(the_wall_affin, aes(x = Sentiment, y = reorder(Song, Sentiment))) + geom_col() + ylab(\"\")",
+    "explanation": "Joins two tables and keeps only rows with matching keys (inner join). Uses a dplyr-style pipe to chain steps clearly from left to right. Groups rows and computes summary statistics per group. Retrieves a sentiment lexicon (e.g., NRC/Bing/AFINN) to tag words with sentiment categories. Creates a ggplot; layers like geom_point/geom_col add marks, labs() sets titles/labels. Adds a geometric layer (points/bars) to the …"
+  },
+  {
+    "code": "the_wall_nrc <- inner_join(the_wall_tokens,\n  get_sentiments(\"nrc\"), by = c(\"word\" = \"word\"))\nthe_wall_nrc |> group_by(sentiment) |>\n  summarize(n = n()) |> ungroup() |>\n  arrange(-n)",
+    "explanation": "Joins two tables and keeps only rows with matching keys (inner join). Uses a dplyr-style pipe to chain steps clearly from left to right. Groups rows and counts observations per group. Sorts the results in descending order. Retrieves a sentiment lexicon (e.g., NRC/Bing/AFINN) to tag words with sentiment categories. Overall: Performs tidy data manipulation to prepare results."
+  },
+  {
+    "code": "inner_join(the_wall_tokens, get_sentiments(\"bing\")) |>\n  count(word, sentiment, sort = TRUE)",
+    "explanation": "Joins two tables and keeps only rows with matching keys (inner join). Uses a dplyr-style pipe to chain steps clearly from left to right. Counts rows by key(s); shorthand for group_by + summarize(n = n()). Retrieves a sentiment lexicon (e.g., NRC/Bing/AFINN) to tag words with sentiment categories. Overall: Performs tidy data manipulation to prepare results."
+  },
+  {
+    "code": "the_wall_bing <- inner_join(the_wall_tokens, get_sentiments(\"bing\")) |>\n  count(word, sentiment, sort = TRUE) |> ungroup()\nthe_wall_bing |> group_by(sentiment) |>  slice_max(n, n = 3) |> ungroup() |>\n  mutate(word = reorder(word, n)) |> ggplot(aes(n, word, fill = sentiment)) + geom_col(show.legend = FALSE) + facet_wrap(~sentiment, scales = \"free_y\")",
+    "explanation": "Joins two tables and keeps only rows with matching keys (inner join). Uses a dplyr-style pipe to chain steps clearly from left to right. Creates or modifies columns using mutate(). Counts rows by key(s); shorthand for group_by + summarize(n = n()). Retrieves a sentiment lexicon (e.g., NRC/Bing/AFINN) to tag words with sentiment categories. Creates a ggplot; layers like geom_point/geom_col add marks, labs() sets …"
+  },
+  {
+    "code": "library(hcandersenr)\nhca <- hca_fairytales()\nhca |> filter(language == \"English\") |> head()",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Filters rows that meet given conditions."
+  },
+  {
+    "code": "fir_tree <- hca_fairytales() |> filter(book == \"The fir tree\", language == \"English\")\ntidy_fir_tree <- fir_tree |> unnest_tokens(word, text) |> anti_join(get_stopwords())\ntidy_fir_tree |> count(word, sort = TRUE) |> filter(str_detect(word, \"^tree\"))",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Filters rows that meet given conditions. Counts rows by key(s); shorthand for group_by + summarize(n = n()). Tokenizes text into one-token-per-row for text mining. Uses stringr helpers to detect, replace, trim, or locate patterns in text. Overall: Performs tidy data manipulation to prepare results. Preprocesses text for analysis or modeling."
+  },
+  {
+    "code": "library(SnowballC)\ntidy_fir_tree |> mutate(stem = wordStem(word)) |> count(stem, sort = TRUE)",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Creates or modifies columns using mutate(). Counts rows by key(s); shorthand for group_by + summarize(n = n()). Overall: Performs tidy data manipulation to prepare results."
+  },
+  {
+    "code": "library(hunspell)\ntidy_fir_tree |> mutate(stem = hunspell_stem(word)) |>\n  unnest(stem) |> count(stem, sort = TRUE)",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Creates or modifies columns using mutate(). Counts rows by key(s); shorthand for group_by + summarize(n = n()). Overall: Performs tidy data manipulation to prepare results."
+  },
+  {
+    "code": "hunspell_stem(\"numbers\")",
+    "explanation": "R code performing data wrangling/modeling steps."
+  },
+  {
+    "code": "library(spacyr)\nspacy_initialize(entity = FALSE)",
+    "explanation": "R code performing data wrangling/modeling steps."
+  },
+  {
+    "code": "txt <- c(\"Mr. Smith spent two years in North Carolina.\")\nspacy_parse(txt)",
+    "explanation": "R code performing data wrangling/modeling steps."
+  },
+  {
+    "code": "fir_tree |> mutate(doc_id = paste0(\"doc\", row_number())) |>\n  select(doc_id, everything()) |> spacy_parse() |>\n  anti_join(get_stopwords(), by = c(\"lemma\" = \"word\")) |>\n  count(lemma, sort = TRUE) |> top_n(15, n) |>\n  ggplot(aes(n, fct_reorder(lemma, n))) + geom_col() +\n  labs(x = \"Frequency\", y = NULL)",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Creates or modifies columns using mutate(). Keeps or reorders selected columns. Counts rows by key(s); shorthand for group_by + summarize(n = n()). Creates a ggplot; layers like geom_point/geom_col add marks, labs() sets titles/labels. Adds a geometric layer (points/bars) to the plot. Adds a title, subtitle, and axis labels to the plot. Keeps the …"
+  },
+  {
+    "code": "fir_tree |> mutate(doc_id = paste0(\"doc\", row_number())) |>\n  select(doc_id, everything()) |> spacy_parse() |>\n  anti_join(get_stopwords(), by = c(\"lemma\" = \"word\")) |>\n  filter(pos != \"PUNCT\") |> count(lemma, sort = TRUE) |> top_n(15, n) |>\n  ggplot(aes(n, fct_reorder(lemma, n))) + geom_col() +\n  labs(x = \"Frequency\", y = NULL)",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Creates or modifies columns using mutate(). Keeps or reorders selected columns. Filters rows that meet given conditions. Counts rows by key(s); shorthand for group_by + summarize(n = n()). Creates a ggplot; layers like geom_point/geom_col add marks, labs() sets titles/labels. Adds a geometric layer (points/bars) to the plot. Adds a title, subtitle, …"
+  },
+  {
+    "code": "library(janeaustenr)\nbook_words <- austen_books() |> unnest_tokens(word, text) |>\n  count(book, word, sort = TRUE)\ntotal_words <- book_words |> group_by(book) |> summarize(total = sum(n))\nbook_words <- left_join(book_words, total_words) ; book_words",
+    "explanation": "Joins two tables keeping all rows from the left table (left join). Uses a dplyr-style pipe to chain steps clearly from left to right. Groups rows and computes summary statistics per group. Counts rows by key(s); shorthand for group_by + summarize(n = n()). Tokenizes text into one-token-per-row for text mining. Overall: Performs tidy data manipulation to prepare results. Preprocesses text for analysis or modeling."
+  },
+  {
+    "code": "ggplot(book_words, aes(n/total, fill = book)) +\n  geom_histogram(show.legend = FALSE) + xlim(NA, 0.0009) +\n  facet_wrap(~book, ncol = 2, scales = \"free_y\")",
+    "explanation": "Creates a ggplot; layers like geom_point/geom_col add marks, labs() sets titles/labels. Creates small multiples by facet. Overall: Visualizes results with ggplot2."
+  },
+  {
+    "code": "ggplot(book_words, aes(n/total, fill = book)) +\n  geom_histogram(show.legend = FALSE) + xlim(NA, 0.0009) +\n  facet_wrap(~book, ncol = 2, scales = \"free_y\")",
+    "explanation": "Creates a ggplot; layers like geom_point/geom_col add marks, labs() sets titles/labels. Creates small multiples by facet. Overall: Visualizes results with ggplot2."
+  },
+  {
+    "code": "freq_by_rank <- book_words |> group_by(book) |>\n  mutate(rank = row_number(), `term frequency` = n/total) |> ungroup()\nfreq_by_rank",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Creates or modifies columns using mutate(). Overall: Performs tidy data manipulation to prepare results."
+  },
+  {
+    "code": "freq_by_rank |> ggplot(aes(rank, `term frequency`, color = book)) +\n  geom_line(linewidth = 1.1, alpha = 0.8, show.legend = FALSE) +\n  scale_x_log10() + scale_y_log10()",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Creates a ggplot; layers like geom_point/geom_col add marks, labs() sets titles/labels. Overall: Visualizes results with ggplot2."
+  },
+  {
+    "code": "rank_subset <- freq_by_rank |> filter(rank < 500, rank > 10)\nlm(log10(`term frequency`) ~ log10(rank), data = rank_subset)",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Filters rows that meet given conditions."
+  },
+  {
+    "code": "freq_by_rank |> ggplot(aes(rank, `term frequency`, color = book)) +\n  geom_abline(intercept = -0.62, slope = -1.1, color = \"gray50\", linetype = 2) +\n  geom_line(linewidth = 1.1, alpha = 0.8, show.legend = FALSE) +\n  scale_x_log10() + scale_y_log10()",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Creates a ggplot; layers like geom_point/geom_col add marks, labs() sets titles/labels. Adds a diagonal or custom reference line to compare predictions vs truth. Overall: Visualizes results with ggplot2."
+  },
+  {
+    "code": "book_tf_idf <- book_words |> bind_tf_idf(word, book, n)\nbook_tf_idf",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right."
+  },
+  {
+    "code": "book_tf_idf |> select(-total) |> arrange(desc(tf_idf))",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Sorts the results in descending order. Keeps or reorders selected columns. Overall: Performs tidy data manipulation to prepare results."
+  },
+  {
+    "code": "tibble(Unique_idf = sort(unique(book_tf_idf$idf)),\n       Unique_values = sort(log(6/1:6)))",
+    "explanation": "R code performing data wrangling/modeling steps."
+  },
+  {
+    "code": "library(forcats); book_tf_idf |> group_by(book) |> slice_max(tf_idf, n = 10) |>\n  ungroup() |> ggplot(aes(tf_idf, fct_reorder(word, tf_idf), fill = book)) +\n  geom_col(show.legend = FALSE) + facet_wrap(~book, ncol = 2, scales = \"free\") +\n  labs(x = \"tf-idf\", y = NULL) + theme(axis.text.y = element_text(size = 4))",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Creates a ggplot; layers like geom_point/geom_col add marks, labs() sets titles/labels. Adds a geometric layer (points/bars) to the plot. Creates small multiples by facet. Adds a title, subtitle, and axis labels to the plot. Keeps the top terms per topic to inspect themes. Overall: Performs tidy data manipulation to prepare results. Visualizes …"
+  },
+  {
+    "code": "data(\"AssociatedPress\", package = \"topicmodels\")\nAssociatedPress",
+    "explanation": "R code performing data wrangling/modeling steps."
+  },
+  {
+    "code": "Terms_AP <- Terms(AssociatedPress)\nset.seed(123); my_sample <- sample(1:length(Terms_AP), 20)\nTerms_AP[my_sample]",
+    "explanation": "R code performing data wrangling/modeling steps."
+  },
+  {
+    "code": "ap_tidy <- tidy(AssociatedPress)\nap_tidy",
+    "explanation": "R code performing data wrangling/modeling steps."
+  },
+  {
+    "code": "data(\"data_corpus_inaugural\", package = \"quanteda\")\ninaug_dfm <- data_corpus_inaugural |> quanteda::tokens() |>\n  quanteda::dfm(verbose = FALSE)\ninaug_dfm",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right."
+  },
+  {
+    "code": "inaug_td <- tidy(inaug_dfm)\nset.seed(314156);inaug_td |> slice_sample(n = 10)",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right."
+  },
+  {
+    "code": "year_term_counts <- inaug_td |>\n  separate_wider_delim(document, delim = \"-\", names = c(\"year\", \"president\")) |>\n  complete(year, term, fill = list(count = 0)) |>\n  mutate(year = as.numeric(year)) |>\n  group_by(year) |>  mutate(year_total = sum(count)) |> ungroup()",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Creates or modifies columns using mutate(). Overall: Performs tidy data manipulation to prepare results."
+  },
+  {
+    "code": "term_freq <- year_term_counts |>\n  filter(term %in% c(\"god\", \"america\", \"foreign\",\n                     \"union\", \"constitution\", \"freedom\")) |>\n  mutate(freq = count / year_total)",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Creates or modifies columns using mutate(). Filters rows that meet given conditions. Overall: Performs tidy data manipulation to prepare results."
+  },
+  {
+    "code": "term_freq |> ggplot(aes(year, freq)) +\n  geom_point() + geom_smooth() + facet_wrap(~term, scales = \"free_y\") +\n  scale_y_continuous(labels = scales::percent_format()) +\n  labs(y = \"% frequency of word in inaugural address\")",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Creates a ggplot; layers like geom_point/geom_col add marks, labs() sets titles/labels. Adds a geometric layer (points/bars) to the plot. Creates small multiples by facet. Adds a title, subtitle, and axis labels to the plot. Overall: Visualizes results with ggplot2."
+  },
+  {
+    "code": "ap_tidy |>\n  cast_dtm(document, term, count)",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right."
+  },
+  {
+    "code": "ap_tidy |>\n  cast_dfm(document, term, count)",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right."
+  },
+  {
+    "code": "austen_dtm <- austen_books() |> unnest_tokens(word, text) |>\n  count(book, word) |> cast_dtm(book, word, n)\nausten_dtm",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Counts rows by key(s); shorthand for group_by + summarize(n = n()). Tokenizes text into one-token-per-row for text mining. Overall: Preprocesses text for analysis or modeling."
+  },
+  {
+    "code": "toks_inaug <- tokens(data_corpus_inaugural)\ndfmat_inaug <- dfm(toks_inaug) |>\n  dfm_remove(stopwords(\"english\"))\ntstat_lexdiv_TTR <- textstat_lexdiv(dfmat_inaug) |> arrange(TTR)\ntail(tstat_lexdiv_TTR, 5)",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Sorts the results in ascending order. Overall: Performs tidy data manipulation to prepare results. Preprocesses text for analysis or modeling."
+  },
+  {
+    "code": "tstat_lexdiv_TTR |> mutate(Year = as.numeric(str_sub(document, 1, 4))) |>\n  ggplot(aes(x = Year, y = TTR)) + geom_line() + geom_smooth()",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Creates or modifies columns using mutate(). Creates a ggplot; layers like geom_point/geom_col add marks, labs() sets titles/labels. Uses stringr helpers to detect, replace, trim, or locate patterns in text. Overall: Performs tidy data manipulation to prepare results. Visualizes results with ggplot2."
+  },
+  {
+    "code": "tstat_lexdiv_MATTR <- textstat_lexdiv(toks_inaug, measure = \"MATTR\") |>  arrange(MATTR)\ntail(tstat_lexdiv_MATTR, 5)",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Sorts the results in ascending order. Overall: Performs tidy data manipulation to prepare results."
+  },
+  {
+    "code": "tstat_lexdiv_MATTR |> mutate(Year = as.numeric(str_sub(document, 1, 4))) |>\n  ggplot(aes(x = Year, y = MATTR)) + geom_line() + geom_smooth()",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Creates or modifies columns using mutate(). Creates a ggplot; layers like geom_point/geom_col add marks, labs() sets titles/labels. Uses stringr helpers to detect, replace, trim, or locate patterns in text. Overall: Performs tidy data manipulation to prepare results. Visualizes results with ggplot2."
+  },
+  {
+    "code": "head(mtcars, 10)",
+    "explanation": "R code performing data wrangling/modeling steps."
+  },
+  {
+    "code": "mtcars_dist <- dist(scale(mtcars), method = \"euclidean\")\nclass(mtcars_dist)\nas.matrix(mtcars_dist)[1:5, 1:3]",
+    "explanation": "R code performing data wrangling/modeling steps."
+  },
+  {
+    "code": "mtcars_hclust <- hclust(mtcars_dist)",
+    "explanation": "R code performing data wrangling/modeling steps."
+  },
+  {
+    "code": "plot(mtcars_hclust, xlab = \"\", sub = \"\", main = \"\")",
+    "explanation": "R code performing data wrangling/modeling steps."
+  },
+  {
+    "code": "mtcars_2_clusters <- cutree(mtcars_hclust, h = 7)\ntable(mtcars_2_clusters)",
+    "explanation": "R code performing data wrangling/modeling steps."
+  },
+  {
+    "code": "mtcars_4_clusters <- cutree(mtcars_hclust, k = 4)\ntable(mtcars_4_clusters)",
+    "explanation": "R code performing data wrangling/modeling steps."
+  },
+  {
+    "code": "toks_inaug <- tokens(data_corpus_inaugural)\ndfmat_inaug <- dfm(toks_inaug) |>\n  dfm_remove(stopwords(\"english\"))\ninaug_dist <- as.dist(textstat_dist(dfmat_inaug))\ndim(as.matrix(inaug_dist))",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Overall: Preprocesses text for analysis or modeling."
+  },
+  {
+    "code": "as.matrix(inaug_dist)[1:5, 1:5]",
+    "explanation": "R code performing data wrangling/modeling steps."
+  },
+  {
+    "code": "inaug_hclust <- hclust(inaug_dist)\nplot(inaug_hclust, xlab = \"\", sub = \"\", main = \"\")",
+    "explanation": "R code performing data wrangling/modeling steps."
+  },
+  {
+    "code": "inaug_jaccard <- textstat_simil(dfmat_inaug, method = \"jaccard\")\ninaug_jaccard[1:5, 1:5]",
+    "explanation": "R code performing data wrangling/modeling steps."
+  },
+  {
+    "code": "inaug_jaccard_melt <- melt(as.matrix(inaug_jaccard))\nhead(inaug_jaccard_melt, 10)",
+    "explanation": "R code performing data wrangling/modeling steps."
+  },
+  {
+    "code": "inaug_jaccard_melt |> ggplot(aes(x = Var1, y = Var2, fill = value)) + scale_fill_gradient2(low = \"blue\", high = \"red\",\n    mid = \"white\", midpoint = 0.5, limit = c(0, 1)) +\n  geom_tile() + xlab(\"\") + ylab(\"\")",
+    "explanation": "Uses a dplyr-style pipe to chain steps clearly from left to right. Creates a ggplot; layers like geom_point/geom_col add marks, labs() sets titles/labels. Overall: Visualizes results with ggplot2."
+  }
+]

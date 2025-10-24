@@ -1,0 +1,1087 @@
+[
+  {
+    "function": "cast_sparse",
+    "package": "Matrix/rsparse",
+    "explanation": "Create a sparse matrix from tidy triplets (row, col, value)."
+  },
+  {
+    "function": "as.matrix",
+    "package": "base",
+    "explanation": "Coerce to a matrix type."
+  },
+  {
+    "function": "as.numeric",
+    "package": "base",
+    "explanation": "Coerce to numeric type."
+  },
+  {
+    "function": "c",
+    "package": "base",
+    "explanation": "Combine values into a vector."
+  },
+  {
+    "function": "data",
+    "package": "base",
+    "explanation": "Load example datasets from a package."
+  },
+  {
+    "function": "mean",
+    "package": "base",
+    "explanation": "Arithmetic mean."
+  },
+  {
+    "function": "nchar",
+    "package": "base",
+    "explanation": "Count the number of characters (bytes in current encoding)."
+  },
+  {
+    "function": "paste",
+    "package": "base",
+    "explanation": "Concatenate strings together with a separator."
+  },
+  {
+    "function": "paste0",
+    "package": "base",
+    "explanation": "Concatenate strings without a separator."
+  },
+  {
+    "function": "rowSums",
+    "package": "base",
+    "explanation": "Sum across rows of a matrix/data frame."
+  },
+  {
+    "function": "set.seed",
+    "package": "base",
+    "explanation": "Set the random number generator seed for reproducibility."
+  },
+  {
+    "function": "sqrt",
+    "package": "base",
+    "explanation": "Square root; also used for vector norms."
+  },
+  {
+    "function": "sum",
+    "package": "base",
+    "explanation": "Sum of elements."
+  },
+  {
+    "function": "tidy",
+    "package": "broom",
+    "explanation": "Coerce model objects into tidy data frames (used by tidytext/topicmodels)."
+  },
+  {
+    "function": "naive_Bayes",
+    "package": "discrim",
+    "explanation": "Naïve Bayes classifier specification (assumes conditional independence of predictors). Specify engine (e.g., `LiblineaR`, `ranger`, `naivebayes`) and mode; keep a null/baseline model for comparison."
+  },
+  {
+    "function": "add_count",
+    "package": "dplyr",
+    "explanation": "Add a column n with counts per group while keeping original rows. Adds frequency column `n` while keeping all rows; use `sort = TRUE` to order by counts."
+  },
+  {
+    "function": "anti_join",
+    "package": "dplyr",
+    "explanation": "Filter left table to rows that do **not** have a match in the right table; no columns are added. Matches rows from two tables based on key columns specified with `by =` (e.g., `by = c(\"id\" = \"id\")`). Common args: `by`, `suffix` (to disambiguate duplicate column names), `keep = FALSE` (keep join keys from both sides), and `relationship` (1-to-1, 1-to-many checks). Pitfalls: duplicated keys can multiply rows; mismatched types prevent joins; use `count()` first to inspect key uniqueness. Typical use: find missing/extra keys, do QA checks."
+  },
+  {
+    "function": "arrange",
+    "package": "dplyr",
+    "explanation": "Sort rows by one or more columns; use desc(x) or negative number for descending. Use `desc(x)` for descending. Sorting is stable; missing values are placed at the end by default."
+  },
+  {
+    "function": "count",
+    "package": "dplyr",
+    "explanation": "Count rows by group; equivalent to group_by(...) |> summarise(n = n()). Shorthand for `group_by(...) |> summarise(n = n())`. Use `sort = TRUE` to order by frequency."
+  },
+  {
+    "function": "filter",
+    "package": "dplyr",
+    "explanation": "Keep rows that satisfy logical conditions. Keep rows by logical conditions; combine with `&`, `|`, `!`. Use `%in%` for set membership."
+  },
+  {
+    "function": "full_join",
+    "package": "dplyr",
+    "explanation": "Keep all rows from both tables (SQL full outer join). Matches rows from two tables based on key columns specified with `by =` (e.g., `by = c(\"id\" = \"id\")`). Common args: `by`, `suffix` (to disambiguate duplicate column names), `keep = FALSE` (keep join keys from both sides), and `relationship` (1-to-1, 1-to-many checks). Pitfalls: duplicated keys can multiply rows; mismatched types prevent joins; use `count()` first to inspect key uniqueness. Typical use: union-like merge while preserving unmatched records from both sides."
+  },
+  {
+    "function": "group_by",
+    "package": "dplyr",
+    "explanation": "Group rows by one or more variables so that summaries are computed per group. Common args: `.add = FALSE`. Pitfall: forgetting to `ungroup()` before later steps can yield unexpected summaries."
+  },
+  {
+    "function": "inner_join",
+    "package": "dplyr",
+    "explanation": "Return only rows where keys appear in both tables (intersection). Matches rows from two tables based on key columns specified with `by =` (e.g., `by = c(\"id\" = \"id\")`). Common args: `by`, `suffix` (to disambiguate duplicate column names), `keep = FALSE` (keep join keys from both sides), and `relationship` (1-to-1, 1-to-many checks). Pitfalls: duplicated keys can multiply rows; mismatched types prevent joins; use `count()` first to inspect key uniqueness. Typical use: enrich observations only when a match exists."
+  },
+  {
+    "function": "left_join",
+    "package": "dplyr",
+    "explanation": "Keep all rows from the left table and add matching columns from the right; unmatched rows get `NA`. Matches rows from two tables based on key columns specified with `by =` (e.g., `by = c(\"id\" = \"id\")`). Common args: `by`, `suffix` (to disambiguate duplicate column names), `keep = FALSE` (keep join keys from both sides), and `relationship` (1-to-1, 1-to-many checks). Pitfalls: duplicated keys can multiply rows; mismatched types prevent joins; use `count()` first to inspect key uniqueness. Typical use: add lookup fields without dropping left rows."
+  },
+  {
+    "function": "mutate",
+    "package": "dplyr",
+    "explanation": "Add new columns or modify existing ones, column-wise. Create/modify columns; use `case_when()` for multi-branch logic and `across()` to apply functions to multiple columns."
+  },
+  {
+    "function": "rename",
+    "package": "dplyr",
+    "explanation": "Rename columns by supplying new = old. Syntax: `new = old`. Use `rename_with()` to rename via a function (e.g., `tolower`)."
+  },
+  {
+    "function": "right_join",
+    "package": "dplyr",
+    "explanation": "Keep all rows from the right table and add matching columns from the left; unmatched rows get `NA`. Matches rows from two tables based on key columns specified with `by =` (e.g., `by = c(\"id\" = \"id\")`). Common args: `by`, `suffix` (to disambiguate duplicate column names), `keep = FALSE` (keep join keys from both sides), and `relationship` (1-to-1, 1-to-many checks). Pitfalls: duplicated keys can multiply rows; mismatched types prevent joins; use `count()` first to inspect key uniqueness. Useful when the right table defines the universe of interest."
+  },
+  {
+    "function": "select",
+    "package": "dplyr",
+    "explanation": "Keep or reorder columns by name or helper (e.g., starts_with). Helpers: `starts_with()`, `ends_with()`, `contains()`, `everything()`. Use `-col` to deselect columns."
+  },
+  {
+    "function": "semi_join",
+    "package": "dplyr",
+    "explanation": "Filter left table to rows that have a match in the right table; no columns are added. Matches rows from two tables based on key columns specified with `by =` (e.g., `by = c(\"id\" = \"id\")`). Common args: `by`, `suffix` (to disambiguate duplicate column names), `keep = FALSE` (keep join keys from both sides), and `relationship` (1-to-1, 1-to-many checks). Pitfalls: duplicated keys can multiply rows; mismatched types prevent joins; use `count()` first to inspect key uniqueness. Typical use: keep only left rows that exist in a reference set."
+  },
+  {
+    "function": "slice_max",
+    "package": "dplyr",
+    "explanation": "Keep the top n rows by a variable, optionally per group. Select top `n` or `prop` rows by `order_by`, optionally per group (`by`). Prefer over deprecated `top_n()`."
+  },
+  {
+    "function": "slice_min",
+    "package": "dplyr",
+    "explanation": "Keep the bottom n rows by a variable, optionally per group. Select bottom `n` or `prop` rows by `order_by`, optionally per group (`by`)."
+  },
+  {
+    "function": "summarize",
+    "package": "dplyr",
+    "explanation": "Compute summary rows (e.g., n(), mean(), sum()) for each group (or whole data if not grouped). Use with aggregators like `n()`, `mean()`, `sum()`, `median()`. Common args: `.groups = \"drop\"` to ungroup automatically. Spelling `summarise()` also valid."
+  },
+  {
+    "function": "top_n",
+    "package": "dplyr",
+    "explanation": "Select top n rows by a variable (deprecated in favor of slice_max/slice_min)."
+  },
+  {
+    "function": "ungroup",
+    "package": "dplyr",
+    "explanation": "Remove any existing grouping from a data frame. Removes grouping. Use after `summarize()` to avoid grouped behavior downstream."
+  },
+  {
+    "function": "fct_reorder",
+    "package": "forcats",
+    "explanation": "Reorder factor levels by another variable (e.g., mean of a numeric)."
+  },
+  {
+    "function": "future_map",
+    "package": "furrr",
+    "explanation": "Parallel version of purrr::map using the future framework."
+  },
+  {
+    "function": "plan",
+    "package": "future",
+    "explanation": "Define the parallel execution strategy (e.g., multisession)."
+  },
+  {
+    "function": "aes",
+    "package": "ggplot2",
+    "explanation": "Define aesthetic mappings (e.g., x, y, color, fill) for a ggplot."
+  },
+  {
+    "function": "autoplot",
+    "package": "ggplot2",
+    "explanation": "Automatically produce a ggplot for certain object types (e.g., ROC curves)."
+  },
+  {
+    "function": "coord_flip",
+    "package": "ggplot2",
+    "explanation": "Swap x and y axes for horizontal plots."
+  },
+  {
+    "function": "facet_wrap",
+    "package": "ggplot2",
+    "explanation": "Make small multiples by wrapping facets across rows/columns."
+  },
+  {
+    "function": "geom_abline",
+    "package": "ggplot2",
+    "explanation": "Add a straight line with given slope and intercept (often the y = x line)."
+  },
+  {
+    "function": "geom_col",
+    "package": "ggplot2",
+    "explanation": "Bar plot where bar heights represent precomputed values (no statistical transformation)."
+  },
+  {
+    "function": "geom_point",
+    "package": "ggplot2",
+    "explanation": "Scatterplot layer to draw points."
+  },
+  {
+    "function": "ggplot",
+    "package": "ggplot2",
+    "explanation": "Create a ggplot object for layered grammar-of-graphics plots."
+  },
+  {
+    "function": "labs",
+    "package": "ggplot2",
+    "explanation": "Add titles, axis labels, captions, and legend titles."
+  },
+  {
+    "function": "fit",
+    "package": "parsnip",
+    "explanation": "Train a model or workflow on a dataset. Workflows keep preprocessing and model spec together, making resampling/tuning reproducible."
+  },
+  {
+    "function": "null_model",
+    "package": "parsnip",
+    "explanation": "Specify a model that predicts the average (regression) or majority class (classification). Specify engine (e.g., `LiblineaR`, `ranger`, `naivebayes`) and mode; keep a null/baseline model for comparison."
+  },
+  {
+    "function": "rand_forest",
+    "package": "parsnip",
+    "explanation": "Random forest model specification for regression/classification. Specify engine (e.g., `LiblineaR`, `ranger`, `naivebayes`) and mode; keep a null/baseline model for comparison."
+  },
+  {
+    "function": "set_engine",
+    "package": "parsnip",
+    "explanation": "Choose the underlying implementation/library for a model. Specify engine (e.g., `LiblineaR`, `ranger`, `naivebayes`) and mode; keep a null/baseline model for comparison."
+  },
+  {
+    "function": "set_mode",
+    "package": "parsnip",
+    "explanation": "Set the mode: 'regression' or 'classification' for a model. Specify engine (e.g., `LiblineaR`, `ranger`, `naivebayes`) and mode; keep a null/baseline model for comparison."
+  },
+  {
+    "function": "svm_linear",
+    "package": "parsnip",
+    "explanation": "Linear Support Vector Machine model specification. Specify engine (e.g., `LiblineaR`, `ranger`, `naivebayes`) and mode; keep a null/baseline model for comparison."
+  },
+  {
+    "function": "map2",
+    "package": "purrr",
+    "explanation": "Map over two inputs in parallel."
+  },
+  {
+    "function": "pluck",
+    "package": "purrr",
+    "explanation": "Extract elements from nested data structures by position/name."
+  },
+  {
+    "function": "safely",
+    "package": "purrr",
+    "explanation": "Wrap a function to capture errors and return results + error objects."
+  },
+  {
+    "function": "corpus",
+    "package": "quanteda",
+    "explanation": "Create a quanteda corpus object from texts (and optional docvars)."
+  },
+  {
+    "function": "tokens",
+    "package": "quanteda",
+    "explanation": "Tokenize a corpus into tokens (fast, flexible)."
+  },
+  {
+    "function": "read_csv",
+    "package": "readr",
+    "explanation": "Fast read of a CSV file into a tibble; guesses column types."
+  },
+  {
+    "function": "readtext",
+    "package": "readtext",
+    "explanation": "Read many text formats (txt, pdf, docx, json) into a data frame with docvars."
+  },
+  {
+    "function": "bake",
+    "package": "recipes",
+    "explanation": "Apply estimated preprocessing steps to data. Recipes define preprocessing independent of the model; `prep()` estimates parameters on training data; `bake()` applies them."
+  },
+  {
+    "function": "prep",
+    "package": "recipes",
+    "explanation": "Estimate preprocessing steps using training data. Recipes define preprocessing independent of the model; `prep()` estimates parameters on training data; `bake()` applies them."
+  },
+  {
+    "function": "recipe",
+    "package": "recipes",
+    "explanation": "Define a sequence of preprocessing steps for modeling. Recipes define preprocessing independent of the model; `prep()` estimates parameters on training data; `bake()` applies them."
+  },
+  {
+    "function": "step_normalize",
+    "package": "recipes",
+    "explanation": "Center and scale numeric predictors. Recipes define preprocessing independent of the model; `prep()` estimates parameters on training data; `bake()` applies them."
+  },
+  {
+    "function": "initial_split",
+    "package": "rsample",
+    "explanation": "Split data into training and testing sets."
+  },
+  {
+    "function": "testing",
+    "package": "rsample",
+    "explanation": "Extract the testing portion from an rsample split."
+  },
+  {
+    "function": "training",
+    "package": "rsample",
+    "explanation": "Extract the training portion from an rsample split."
+  },
+  {
+    "function": "vfold_cv",
+    "package": "rsample",
+    "explanation": "Create v-fold cross-validation resamples. Use with `yardstick` metrics; always evaluate on resamples or a test set to avoid optimistic bias."
+  },
+  {
+    "function": "slide",
+    "package": "slider",
+    "explanation": "Apply a sliding window over a vector/list to compute results per window."
+  },
+  {
+    "function": "stopwords",
+    "package": "stopwords",
+    "explanation": "`stopwords()` is an R function. Commonly used from `stopwords`. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "str_detect",
+    "package": "stringr",
+    "explanation": "Test whether a string contains a pattern (regex), returning TRUE/FALSE. Patterns are regular expressions by default; set `fixed()` for literal matching to avoid regex surprises."
+  },
+  {
+    "function": "str_flatten",
+    "package": "stringr",
+    "explanation": "Concatenate a character vector into a single string with a separator. Patterns are regular expressions by default; set `fixed()` for literal matching to avoid regex surprises."
+  },
+  {
+    "function": "str_length",
+    "package": "stringr",
+    "explanation": "Count the number of characters in a string (vectorized). Patterns are regular expressions by default; set `fixed()` for literal matching to avoid regex surprises."
+  },
+  {
+    "function": "str_locate_all",
+    "package": "stringr",
+    "explanation": "Locate start/end positions of all matches for a regex in each string. Patterns are regular expressions by default; set `fixed()` for literal matching to avoid regex surprises."
+  },
+  {
+    "function": "str_pad",
+    "package": "stringr",
+    "explanation": "Pad strings to a fixed width on the left, right, or both. Patterns are regular expressions by default; set `fixed()` for literal matching to avoid regex surprises."
+  },
+  {
+    "function": "str_replace",
+    "package": "stringr",
+    "explanation": "Replace the first match of a pattern with a replacement. Patterns are regular expressions by default; set `fixed()` for literal matching to avoid regex surprises."
+  },
+  {
+    "function": "str_replace_all",
+    "package": "stringr",
+    "explanation": "Replace all matches of a pattern (regex) with a replacement. Patterns are regular expressions by default; set `fixed()` for literal matching to avoid regex surprises."
+  },
+  {
+    "function": "str_squish",
+    "package": "stringr",
+    "explanation": "Trim and collapse multiple spaces to a single space within strings. Patterns are regular expressions by default; set `fixed()` for literal matching to avoid regex surprises."
+  },
+  {
+    "function": "str_sub",
+    "package": "stringr",
+    "explanation": "Extract or replace substrings by position (start/end indexes)."
+  },
+  {
+    "function": "str_trim",
+    "package": "stringr",
+    "explanation": "Trim whitespace from start/end of strings (left, right, or both). Patterns are regular expressions by default; set `fixed()` for literal matching to avoid regex surprises."
+  },
+  {
+    "function": "str_view_all",
+    "package": "stringr",
+    "explanation": "Visually display regex matches in strings (interactive printing)."
+  },
+  {
+    "function": "step_stopwords",
+    "package": "textrecipes",
+    "explanation": "Remove stop words from tokenized text using a chosen lexicon. Recipes define preprocessing independent of the model; `prep()` estimates parameters on training data; `bake()` applies them."
+  },
+  {
+    "function": "step_tfidf",
+    "package": "textrecipes",
+    "explanation": "Create TF-IDF features from token counts. Recipes define preprocessing independent of the model; `prep()` estimates parameters on training data; `bake()` applies them."
+  },
+  {
+    "function": "step_tokenfilter",
+    "package": "textrecipes",
+    "explanation": "Keep only the most frequent tokens (e.g., top 1,000). Recipes define preprocessing independent of the model; `prep()` estimates parameters on training data; `bake()` applies them."
+  },
+  {
+    "function": "step_tokenize",
+    "package": "textrecipes",
+    "explanation": "Tokenize text columns into tokens. Recipes define preprocessing independent of the model; `prep()` estimates parameters on training data; `bake()` applies them."
+  },
+  {
+    "function": "glimpse",
+    "package": "tibble",
+    "explanation": "Preview a tibble: columns, types, and examples of values."
+  },
+  {
+    "function": "tibble",
+    "package": "tibble",
+    "explanation": "Create a tibble (modern data frame)."
+  },
+  {
+    "function": "nest",
+    "package": "tidyr",
+    "explanation": "Pack a set of columns into a single list-column, creating one row per group."
+  },
+  {
+    "function": "pivot_longer",
+    "package": "tidyr",
+    "explanation": "Turn wide data into long (tidy) format by gathering columns into key-value pairs. Common args: `names_from`, `values_from`; resolve duplicates with `values_fn = list(value = sum)` and `values_fill` for missing combinations."
+  },
+  {
+    "function": "pivot_wider",
+    "package": "tidyr",
+    "explanation": "Turn long data into wide format by spreading values across multiple columns. Common args: `names_from`, `values_from`; resolve duplicates with `values_fn = list(value = sum)` and `values_fill` for missing combinations."
+  },
+  {
+    "function": "unite",
+    "package": "tidyr",
+    "explanation": "Combine multiple columns into a single column with a separator."
+  },
+  {
+    "function": "unnest",
+    "package": "tidyr",
+    "explanation": "Unpack a list-column back into regular rows and columns."
+  },
+  {
+    "function": "get_sentiments",
+    "package": "tidytext",
+    "explanation": "Load sentiment lexicons such as 'bing', 'afinn', or 'nrc'."
+  },
+  {
+    "function": "reorder_within",
+    "package": "tidytext",
+    "explanation": "Reorder factor levels within facets for better plotting (used with scale_x_reordered)."
+  },
+  {
+    "function": "scale_x_reordered",
+    "package": "tidytext",
+    "explanation": "Helper scale for reorder_within to work in facets."
+  },
+  {
+    "function": "unnest_tokens",
+    "package": "tidytext",
+    "explanation": "Split text into tokens (e.g., words, n-grams) producing one-token-per-row. Common args: `token` (e.g., \"words\", \"ngrams\"), `n` for n-grams, `to_lower = TRUE/FALSE`. Output is one-token-per-row."
+  },
+  {
+    "function": "tokenize_words",
+    "package": "tokenizers",
+    "explanation": "Tokenize text into words; returns a list of character vectors."
+  },
+  {
+    "function": "LDA",
+    "package": "topicmodels",
+    "explanation": "Fit a Latent Dirichlet Allocation topic model to a document-term matrix."
+  },
+  {
+    "function": "collect_metrics",
+    "package": "tune",
+    "explanation": "Extract metrics (e.g., rmse, accuracy, roc_auc) from resampling objects. Use with `yardstick` metrics; always evaluate on resamples or a test set to avoid optimistic bias."
+  },
+  {
+    "function": "collect_predictions",
+    "package": "tune",
+    "explanation": "Extract out-of-fold predictions from resampling objects. Use with `yardstick` metrics; always evaluate on resamples or a test set to avoid optimistic bias."
+  },
+  {
+    "function": "fit_resamples",
+    "package": "tune",
+    "explanation": "Fit a workflow across resamples (e.g., v-fold CV) and compute metrics. Workflows keep preprocessing and model spec together, making resampling/tuning reproducible."
+  },
+  {
+    "function": "Terms",
+    "package": "unknown",
+    "explanation": "`Terms()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "VCorpus",
+    "package": "unknown",
+    "explanation": "`VCorpus()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "VectorSource",
+    "package": "unknown",
+    "explanation": "`VectorSource()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "Wall",
+    "package": "unknown",
+    "explanation": "`Wall()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "abs",
+    "package": "unknown",
+    "explanation": "`abs()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "all_predictors",
+    "package": "unknown",
+    "explanation": "`all_predictors()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "as.character",
+    "package": "unknown",
+    "explanation": "`as.character()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "as.dist",
+    "package": "unknown",
+    "explanation": "`as.dist()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "austen_books",
+    "package": "unknown",
+    "explanation": "`austen_books()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "bind_rows",
+    "package": "unknown",
+    "explanation": "`bind_rows()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "bind_tf_idf",
+    "package": "unknown",
+    "explanation": "`bind_tf_idf()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "cast_dfm",
+    "package": "unknown",
+    "explanation": "`cast_dfm()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "cast_dtm",
+    "package": "unknown",
+    "explanation": "`cast_dtm()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "class",
+    "package": "unknown",
+    "explanation": "`class()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "compact",
+    "package": "unknown",
+    "explanation": "`compact()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "complete",
+    "package": "unknown",
+    "explanation": "`complete()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "contains",
+    "package": "unknown",
+    "explanation": "`contains()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "control_resamples",
+    "package": "unknown",
+    "explanation": "`control_resamples()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "cosine_similarity",
+    "package": "unknown",
+    "explanation": "`cosine_similarity()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "cutree",
+    "package": "unknown",
+    "explanation": "`cutree()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "data.frame",
+    "package": "unknown",
+    "explanation": "`data.frame()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "desc",
+    "package": "unknown",
+    "explanation": "`desc()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "dfm",
+    "package": "unknown",
+    "explanation": "`dfm()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "dfm_remove",
+    "package": "unknown",
+    "explanation": "`dfm_remove()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "dim",
+    "package": "unknown",
+    "explanation": "`dim()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "dist",
+    "package": "unknown",
+    "explanation": "`dist()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "docnames",
+    "package": "unknown",
+    "explanation": "`docnames()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "element_text",
+    "package": "unknown",
+    "explanation": "`element_text()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "embedding_glove6b",
+    "package": "unknown",
+    "explanation": "`embedding_glove6b()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "everything",
+    "package": "unknown",
+    "explanation": "`everything()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "extract_fit_parsnip",
+    "package": "unknown",
+    "explanation": "`extract_fit_parsnip()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "factor",
+    "package": "unknown",
+    "explanation": "`factor()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "geom_crossbar",
+    "package": "unknown",
+    "explanation": "`geom_crossbar()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "geom_histogram",
+    "package": "unknown",
+    "explanation": "`geom_histogram()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "geom_line",
+    "package": "unknown",
+    "explanation": "`geom_line()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "geom_smooth",
+    "package": "unknown",
+    "explanation": "`geom_smooth()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "geom_tile",
+    "package": "unknown",
+    "explanation": "`geom_tile()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "get_stopwords",
+    "package": "unknown",
+    "explanation": "`get_stopwords()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "gsub",
+    "package": "unknown",
+    "explanation": "`gsub()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "hca_fairytales",
+    "package": "unknown",
+    "explanation": "`hca_fairytales()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "hclust",
+    "package": "unknown",
+    "explanation": "`hclust()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "hunspell_stem",
+    "package": "unknown",
+    "explanation": "`hunspell_stem()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "if_else",
+    "package": "unknown",
+    "explanation": "`if_else()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "install.packages",
+    "package": "unknown",
+    "explanation": "`install.packages()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "install_keras",
+    "package": "unknown",
+    "explanation": "`install_keras()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "is.null",
+    "package": "unknown",
+    "explanation": "`is.null()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "length",
+    "package": "unknown",
+    "explanation": "`length()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "library",
+    "package": "unknown",
+    "explanation": "`library()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "list",
+    "package": "unknown",
+    "explanation": "`list()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "lm",
+    "package": "unknown",
+    "explanation": "`lm()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "load",
+    "package": "unknown",
+    "explanation": "`load()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "log",
+    "package": "unknown",
+    "explanation": "`log()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "log10",
+    "package": "unknown",
+    "explanation": "`log10()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "log2",
+    "package": "unknown",
+    "explanation": "`log2()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "map_dfr",
+    "package": "unknown",
+    "explanation": "`map_dfr()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "map_int",
+    "package": "unknown",
+    "explanation": "`map_int()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "matrix",
+    "package": "unknown",
+    "explanation": "`matrix()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "melt",
+    "package": "unknown",
+    "explanation": "`melt()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "n",
+    "package": "unknown",
+    "explanation": "`n()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "names",
+    "package": "unknown",
+    "explanation": "`names()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "nearest_neighbors",
+    "package": "unknown",
+    "explanation": "`nearest_neighbors()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "nearest_neighbors_2",
+    "package": "unknown",
+    "explanation": "`nearest_neighbors_2()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "nrow",
+    "package": "unknown",
+    "explanation": "`nrow()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "percent_format",
+    "package": "unknown",
+    "explanation": "`percent_format()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "plot",
+    "package": "unknown",
+    "explanation": "`plot()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "print",
+    "package": "unknown",
+    "explanation": "`print()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "read.csv",
+    "package": "unknown",
+    "explanation": "`read.csv()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "reorder",
+    "package": "unknown",
+    "explanation": "`reorder()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "rep",
+    "package": "unknown",
+    "explanation": "`rep()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "row_number",
+    "package": "unknown",
+    "explanation": "`row_number()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "safe_mutate",
+    "package": "unknown",
+    "explanation": "`safe_mutate()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "sample",
+    "package": "unknown",
+    "explanation": "`sample()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "scale",
+    "package": "unknown",
+    "explanation": "`scale()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "scale_fill_gradient2",
+    "package": "unknown",
+    "explanation": "`scale_fill_gradient2()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "scale_x_log10",
+    "package": "unknown",
+    "explanation": "`scale_x_log10()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "scale_y_continuous",
+    "package": "unknown",
+    "explanation": "`scale_y_continuous()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "scale_y_log10",
+    "package": "unknown",
+    "explanation": "`scale_y_log10()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "scale_y_reordered",
+    "package": "unknown",
+    "explanation": "`scale_y_reordered()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "separate_wider_delim",
+    "package": "unknown",
+    "explanation": "`separate_wider_delim()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "slice_sample",
+    "package": "unknown",
+    "explanation": "`slice_sample()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "sort",
+    "package": "unknown",
+    "explanation": "`sort()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "spacy_initialize",
+    "package": "unknown",
+    "explanation": "`spacy_initialize()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "spacy_parse",
+    "package": "unknown",
+    "explanation": "`spacy_parse()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "stopword_rec",
+    "package": "unknown",
+    "explanation": "`stopword_rec()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "str_remove_all",
+    "package": "unknown",
+    "explanation": "`str_remove_all()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "substr",
+    "package": "unknown",
+    "explanation": "`substr()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "summary",
+    "package": "unknown",
+    "explanation": "`summary()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "system.file",
+    "package": "unknown",
+    "explanation": "`system.file()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "table",
+    "package": "unknown",
+    "explanation": "`table()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "tail",
+    "package": "unknown",
+    "explanation": "`tail()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "textstat_dist",
+    "package": "unknown",
+    "explanation": "`textstat_dist()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "textstat_frequency",
+    "package": "unknown",
+    "explanation": "`textstat_frequency()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "textstat_lexdiv",
+    "package": "unknown",
+    "explanation": "`textstat_lexdiv()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "textstat_simil",
+    "package": "unknown",
+    "explanation": "`textstat_simil()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "theme",
+    "package": "unknown",
+    "explanation": "`theme()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "tokenize_character",
+    "package": "unknown",
+    "explanation": "`tokenize_character()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "tokenize_ngrams",
+    "package": "unknown",
+    "explanation": "`tokenize_ngrams()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "tokens_select",
+    "package": "unknown",
+    "explanation": "`tokens_select()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "transpose",
+    "package": "unknown",
+    "explanation": "`transpose()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "unique",
+    "package": "unknown",
+    "explanation": "`unique()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "with",
+    "package": "unknown",
+    "explanation": "`with()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "wordStem",
+    "package": "unknown",
+    "explanation": "`wordStem()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "wordcloud2",
+    "package": "unknown",
+    "explanation": "`wordcloud2()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "xlab",
+    "package": "unknown",
+    "explanation": "`xlab()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "xlim",
+    "package": "unknown",
+    "explanation": "`xlim()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "ylab",
+    "package": "unknown",
+    "explanation": "`ylab()` is an R function. Refer to the package documentation for details and examples."
+  },
+  {
+    "function": "head",
+    "package": "utils",
+    "explanation": "Return the first n rows/elements."
+  },
+  {
+    "function": "pairwise_pmi",
+    "package": "widyr",
+    "explanation": "Compute Pointwise Mutual Information between items co-occurring within windows. Converts tidy pairwise data to wide matrices to run efficient linear algebra, then returns tidy results."
+  },
+  {
+    "function": "widely",
+    "package": "widyr",
+    "explanation": "Convert tidy pairwise data to a wide matrix, apply a function, and return tidy results. Converts tidy pairwise data to wide matrices to run efficient linear algebra, then returns tidy results."
+  },
+  {
+    "function": "widely_svd",
+    "package": "widyr",
+    "explanation": "Compute SVD on pairwise data using a tidy-friendly wrapper. Converts tidy pairwise data to wide matrices to run efficient linear algebra, then returns tidy results."
+  },
+  {
+    "function": "wordcloud",
+    "package": "wordcloud",
+    "explanation": "Draw a word cloud of terms sized by frequency."
+  },
+  {
+    "function": "add_model",
+    "package": "workflows",
+    "explanation": "Attach a model specification to a workflow. Workflows keep preprocessing and model spec together, making resampling/tuning reproducible."
+  },
+  {
+    "function": "add_recipe",
+    "package": "workflows",
+    "explanation": "Attach a preprocessing recipe to a workflow. Workflows keep preprocessing and model spec together, making resampling/tuning reproducible."
+  },
+  {
+    "function": "workflow",
+    "package": "workflows",
+    "explanation": "Bundle a preprocessor (recipe) and a model together. Workflows keep preprocessing and model spec together, making resampling/tuning reproducible."
+  },
+  {
+    "function": "conf_mat_resampled",
+    "package": "yardstick",
+    "explanation": "Aggregate confusion matrices across resamples. Use with `yardstick` metrics; always evaluate on resamples or a test set to avoid optimistic bias."
+  },
+  {
+    "function": "metric_set",
+    "package": "yardstick",
+    "explanation": "Bundle selected metrics for evaluation (e.g., rmse, rsq). Use with `yardstick` metrics; always evaluate on resamples or a test set to avoid optimistic bias."
+  },
+  {
+    "function": "roc_curve",
+    "package": "yardstick",
+    "explanation": "Compute ROC curve points from predicted probabilities versus truths. Use with `yardstick` metrics; always evaluate on resamples or a test set to avoid optimistic bias."
+  }
+]
