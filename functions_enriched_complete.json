@@ -17,7 +17,7 @@
   {
     "function": "c",
     "package": "base",
-    "explanation": "Combine values into a vector."
+    "explanation": "This is a generic function which combines its arguments."
   },
   {
     "function": "data",
@@ -27,17 +27,17 @@
   {
     "function": "mean",
     "package": "base",
-    "explanation": "Arithmetic mean."
+    "explanation": "Generic function for the (trimmed) arithmetic mean."
   },
   {
     "function": "nchar",
     "package": "base",
-    "explanation": "Count the number of characters (bytes in current encoding)."
+    "explanation": "nchartakes a character vector as an argument and returns a vector whose elements contain the sizes of the corresponding elements ofx. Internally, it is a generic, for which methods can be defined."
   },
   {
     "function": "paste",
     "package": "base",
-    "explanation": "Concatenate strings together with a separator."
+    "explanation": "Concatenate vectors after converting to character."
   },
   {
     "function": "paste0",
@@ -62,7 +62,7 @@
   {
     "function": "sum",
     "package": "base",
-    "explanation": "Sum of elements."
+    "explanation": "sumreturns the sum of all the values present in its arguments."
   },
   {
     "function": "tidy",
@@ -92,12 +92,12 @@
   {
     "function": "count",
     "package": "dplyr",
-    "explanation": "Count rows by group; equivalent to group_by(...) |> summarise(n = n()). Shorthand for `group_by(...) |> summarise(n = n())`. Use `sort = TRUE` to order by frequency."
+    "explanation": "count()lets you quickly count the unique values of one or more variables:df %>% count(a, b)is roughly equivalent todf %>% group_by(a, b) %>% summarise(n = n()).count()is paired withtally(), a lower-level helper that is equivalent todf %>% summarise(n = n()). Supplywtto perform weighted counts, switching the summary fromn = n()ton = sum(wt)."
   },
   {
     "function": "filter",
     "package": "dplyr",
-    "explanation": "Keep rows that satisfy logical conditions. Keep rows by logical conditions; combine with `&`, `|`, `!`. Use `%in%` for set membership."
+    "explanation": "Thefilter()function is used to subset a data frame, retaining all rows that satisfy your conditions. To be retained, the row must produce a value ofTRUEfor all conditions. Note that when a condition evaluates toNAthe row will be dropped, unlike base subsetting with[."
   },
   {
     "function": "full_join",
@@ -107,7 +107,7 @@
   {
     "function": "group_by",
     "package": "dplyr",
-    "explanation": "Group rows by one or more variables so that summaries are computed per group. Common args: `.add = FALSE`. Pitfall: forgetting to `ungroup()` before later steps can yield unexpected summaries."
+    "explanation": "Most data operations are done on groups defined by variables.group_by()takes an existing tbl and converts it into a grouped tbl where operations are performed \"by group\".ungroup()removes grouping."
   },
   {
     "function": "inner_join",
@@ -122,12 +122,12 @@
   {
     "function": "mutate",
     "package": "dplyr",
-    "explanation": "Add new columns or modify existing ones, column-wise. Create/modify columns; use `case_when()` for multi-branch logic and `across()` to apply functions to multiple columns."
+    "explanation": "mutate()adds new variables and preserves existing ones;transmute()adds new variables and drops existing ones. New variables overwrite existing variables of the same name. Variables can be removed by setting their value toNULL."
   },
   {
     "function": "rename",
     "package": "dplyr",
-    "explanation": "Rename columns by supplying new = old. Syntax: `new = old`. Use `rename_with()` to rename via a function (e.g., `tolower`)."
+    "explanation": "rename()changes the names of individual variables usingnew_name = old_namesyntax;rename_with()renames columns using a function."
   },
   {
     "function": "right_join",
@@ -137,7 +137,7 @@
   {
     "function": "select",
     "package": "dplyr",
-    "explanation": "Keep or reorder columns by name or helper (e.g., starts_with). Helpers: `starts_with()`, `ends_with()`, `contains()`, `everything()`. Use `-col` to deselect columns."
+    "explanation": "Select (and optionally rename) variables in a data frame, using a concise mini-language that makes it easy to refer to variables based on their name (e.g.a:fselects all columns fromaon the left tofon the right). You can also use predicate functions likeis.numericto select variables based on their properties."
   },
   {
     "function": "semi_join",
@@ -162,7 +162,7 @@
   {
     "function": "top_n",
     "package": "dplyr",
-    "explanation": "Select top n rows by a variable (deprecated in favor of slice_max/slice_min)."
+    "explanation": "top_n()has been superseded in favour ofslice_min()/slice_max(). While it will not be deprecated in the near future, retirement means that we will only perform critical bug fixes, so we recommend moving to the newer alternatives."
   },
   {
     "function": "ungroup",
@@ -172,42 +172,42 @@
   {
     "function": "fct_reorder",
     "package": "forcats",
-    "explanation": "Reorder factor levels by another variable (e.g., mean of a numeric)."
+    "explanation": "fct_reorder()is useful for 1d displays where the factor is mapped to position;fct_reorder2()for 2d displays where the factor is mapped to a non-position aesthetic.last2()andfirst2()are helpers forfct_reorder2();last2()finds the last value ofywhen sorted byx;first2()finds the first value."
   },
   {
     "function": "future_map",
     "package": "furrr",
-    "explanation": "Parallel version of purrr::map using the future framework."
+    "explanation": "These functions work exactly the same aspurrr::map()and its variants, but allow you to map in parallel."
   },
   {
     "function": "plan",
     "package": "future",
-    "explanation": "Define the parallel execution strategy (e.g., multisession)."
+    "explanation": "This function allowsthe userto plan the future, more specifically, it specifies howfuture():s are resolved, e.g. sequentially or in parallel."
   },
   {
     "function": "aes",
     "package": "ggplot2",
-    "explanation": "Define aesthetic mappings (e.g., x, y, color, fill) for a ggplot."
+    "explanation": "Aesthetic mappings describe how variables in the data are mapped to visual properties (aesthetics) of geoms. Aesthetic mappings can be set inggplot()and in individual layers."
   },
   {
     "function": "autoplot",
     "package": "ggplot2",
-    "explanation": "Automatically produce a ggplot for certain object types (e.g., ROC curves)."
+    "explanation": "autoplot()uses ggplot2 to draw a particular plot for an object of a particular class in a single command. This defines the S3 generic that other classes and packages can extend."
   },
   {
     "function": "coord_flip",
     "package": "ggplot2",
-    "explanation": "Swap x and y axes for horizontal plots."
+    "explanation": "<p><a href=\"https://lifecycle.r-lib.org/articles/stages.html#superseded\"><img src=\"figures/lifecycle-superseded.svg?package=ggplot2&version=3.5.2\" alt=\"[Superseded]\"></a></p> <p>This function is superseded because in many cases, <code>coord_flip()</code> can easily be replaced by swapping the x and y aesthetics, or optionally setting the <code>orientation</code> argument in geom and stat layers.</p> <p><code>coord_flip()</code> is useful for geoms and statistics that do not support the <code>..."
   },
   {
     "function": "facet_wrap",
     "package": "ggplot2",
-    "explanation": "Make small multiples by wrapping facets across rows/columns."
+    "explanation": "facet_wrap()wraps a 1d sequence of panels into 2d. This is generally a better use of screen space thanfacet_grid()because most displays are roughly rectangular."
   },
   {
     "function": "geom_abline",
     "package": "ggplot2",
-    "explanation": "Add a straight line with given slope and intercept (often the y = x line)."
+    "explanation": "These geoms add reference lines (sometimes called rules) to a plot, either horizontal, vertical, or diagonal (specified by slope and intercept). These are useful for annotating plots."
   },
   {
     "function": "geom_col",
@@ -217,17 +217,17 @@
   {
     "function": "geom_point",
     "package": "ggplot2",
-    "explanation": "Scatterplot layer to draw points."
+    "explanation": "The point geom is used to create scatterplots. The scatterplot is most useful for displaying the relationship between two continuous variables. It can be used to compare one continuous and one categorical variable, or two categorical variables, but a variation likegeom_jitter(),geom_count(), orgeom_bin_2d()is usually more appropriate. Abubblechartis a scatterplot with a third variable mapped to the size of points."
   },
   {
     "function": "ggplot",
     "package": "ggplot2",
-    "explanation": "Create a ggplot object for layered grammar-of-graphics plots."
+    "explanation": "ggplot()initializes a ggplot object. It can be used to declare the input data frame for a graphic and to specify the set of plot aesthetics intended to be common throughout all subsequent layers unless specifically overridden."
   },
   {
     "function": "labs",
     "package": "ggplot2",
-    "explanation": "Add titles, axis labels, captions, and legend titles."
+    "explanation": "Good labels are critical for making your plots accessible to a wider audience. Always ensure the axis and legend labels display the full variable name. Use the plottitleandsubtitleto explain the main findings. It's common to use thecaptionto provide information about the data source.tagcan be used for adding identification tags to differentiate between multiple plots."
   },
   {
     "function": "fit",
@@ -242,7 +242,7 @@
   {
     "function": "rand_forest",
     "package": "parsnip",
-    "explanation": "Random forest model specification for regression/classification. Specify engine (e.g., `LiblineaR`, `ranger`, `naivebayes`) and mode; keep a null/baseline model for comparison."
+    "explanation": "rand_forest()defines a model that creates a large number of decision trees, each independent of the others. The final prediction uses all predictions from the individual trees and combines them. This function can fit classification, regression, and censored regression models."
   },
   {
     "function": "set_engine",
@@ -257,32 +257,32 @@
   {
     "function": "svm_linear",
     "package": "parsnip",
-    "explanation": "Linear Support Vector Machine model specification. Specify engine (e.g., `LiblineaR`, `ranger`, `naivebayes`) and mode; keep a null/baseline model for comparison."
+    "explanation": "svm_linear()defines a support vector machine model. For classification, the model tries to maximize the width of the margin between classes (using a linear class boundary). For regression, the model optimizes a robust loss function that is only affected by very large model residuals and uses a linear fit. This function can fit classification and regression models."
   },
   {
     "function": "map2",
     "package": "purrr",
-    "explanation": "Map over two inputs in parallel."
+    "explanation": "These functions are variants ofmap()that iterate over two arguments at a time."
   },
   {
     "function": "pluck",
     "package": "purrr",
-    "explanation": "Extract elements from nested data structures by position/name."
+    "explanation": "pluck()implements a generalised form of[[that allow you to index deeply and flexibly into data structures. It always succeeds, returning.defaultif the index you are trying to access does not exist or isNULL."
   },
   {
     "function": "safely",
     "package": "purrr",
-    "explanation": "Wrap a function to capture errors and return results + error objects."
+    "explanation": "Creates a modified version of.fthat always succeeds. It returns a list with componentsresultanderror. If the function succeeds,resultcontains the returned value anderrorisNULL. If an error occurred,erroris anerrorobject andresultis eitherNULLorotherwise."
   },
   {
     "function": "corpus",
     "package": "quanteda",
-    "explanation": "Create a quanteda corpus object from texts (and optional docvars)."
+    "explanation": "Creates a corpus object from available sources. The currently available sources are:"
   },
   {
     "function": "tokens",
     "package": "quanteda",
-    "explanation": "Tokenize a corpus into tokens (fast, flexible)."
+    "explanation": "Construct a tokens object, either by importing a named list of characters from an external tokenizer, or by calling the internalquantedatokenizer."
   },
   {
     "function": "read_csv",
@@ -292,7 +292,7 @@
   {
     "function": "readtext",
     "package": "readtext",
-    "explanation": "Read many text formats (txt, pdf, docx, json) into a data frame with docvars."
+    "explanation": "Read texts and (if any) associated document-level meta-data from one or more source files. The text source files come from the textual component of the files, and the document-level metadata (\"docvars\") come from either the file contents or filenames."
   },
   {
     "function": "bake",
@@ -317,7 +317,7 @@
   {
     "function": "initial_split",
     "package": "rsample",
-    "explanation": "Split data into training and testing sets."
+    "explanation": "initial_split()creates a single binary split of the data into a training set and testing set.initial_time_split()does the same, but takes thefirstpropsamples for training, instead of a random selection.group_initial_split()creates splits of the data based on some grouping variable, so that all data in a \"group\" is assigned to the same split."
   },
   {
     "function": "testing",
@@ -332,17 +332,17 @@
   {
     "function": "vfold_cv",
     "package": "rsample",
-    "explanation": "Create v-fold cross-validation resamples. Use with `yardstick` metrics; always evaluate on resamples or a test set to avoid optimistic bias."
+    "explanation": "V-fold cross-validation (also known as k-fold cross-validation) randomly splits the data into V groups of roughly equal size (called \"folds\"). A resample of the analysis data consists of V-1 of the folds while the assessment set contains the final fold. In basic V-fold cross-validation (i.e. no repeats), the number of resamples is equal to V."
   },
   {
     "function": "slide",
     "package": "slider",
-    "explanation": "Apply a sliding window over a vector/list to compute results per window."
+    "explanation": "slide()iterates through.xusing a sliding window, applying.fto each sub-window of.x."
   },
   {
     "function": "stopwords",
     "package": "stopwords",
-    "explanation": "`stopwords()` is an R function. Commonly used from `stopwords`. Refer to the package documentation for details and examples."
+    "explanation": "This function returns character vectors of stopwords for different languages, using theISO-639-1 language codes, and allows for different sources of stopwords to be defined."
   },
   {
     "function": "str_detect",
@@ -357,7 +357,7 @@
   {
     "function": "str_length",
     "package": "stringr",
-    "explanation": "Count the number of characters in a string (vectorized). Patterns are regular expressions by default; set `fixed()` for literal matching to avoid regex surprises."
+    "explanation": "str_length()returns the number of codepoints in a string. These are the individual elements (which are often, but not always letters) that can be extracted withstr_sub()."
   },
   {
     "function": "str_locate_all",
@@ -387,7 +387,7 @@
   {
     "function": "str_sub",
     "package": "stringr",
-    "explanation": "Extract or replace substrings by position (start/end indexes)."
+    "explanation": "str_sub()extracts or replaces the elements at a single position in each string.str_sub_all()allows you to extract strings at multiple elements in every string."
   },
   {
     "function": "str_trim",
@@ -407,7 +407,7 @@
   {
     "function": "step_tfidf",
     "package": "textrecipes",
-    "explanation": "Create TF-IDF features from token counts. Recipes define preprocessing independent of the model; `prep()` estimates parameters on training data; `bake()` applies them."
+    "explanation": "step_tfidf()creates aspecificationof a recipe step that will convert atokenvariable into multiple variables containing the term frequency-inverse document frequency of tokens."
   },
   {
     "function": "step_tokenfilter",
@@ -427,12 +427,12 @@
   {
     "function": "tibble",
     "package": "tibble",
-    "explanation": "Create a tibble (modern data frame)."
+    "explanation": "tibble()constructs a data frame. It is used likebase::data.frame(), but with a couple notable differences:"
   },
   {
     "function": "nest",
     "package": "tidyr",
-    "explanation": "Pack a set of columns into a single list-column, creating one row per group."
+    "explanation": "Nesting creates a list-column of data frames; unnesting flattens it back out into regular columns. Nesting is implicitly a summarising operation: you get one row for each group defined by the non-nested columns. This is useful in conjunction with other summaries that work with whole datasets, most notably models."
   },
   {
     "function": "pivot_longer",
@@ -447,22 +447,22 @@
   {
     "function": "unite",
     "package": "tidyr",
-    "explanation": "Combine multiple columns into a single column with a separator."
+    "explanation": "Convenience function to paste together multiple columns into one."
   },
   {
     "function": "unnest",
     "package": "tidyr",
-    "explanation": "Unpack a list-column back into regular rows and columns."
+    "explanation": "Unnest expands a list-column containing data frames into rows and columns."
   },
   {
     "function": "get_sentiments",
     "package": "tidytext",
-    "explanation": "Load sentiment lexicons such as 'bing', 'afinn', or 'nrc'."
+    "explanation": "Get specific sentiment lexicons in a tidy format, with one row per word, in a form that can be joined with a one-word-per-row dataset. The\"bing\"option comes from the includedsentiments()data frame, and others call the relevant function in thetextdatapackage."
   },
   {
     "function": "reorder_within",
     "package": "tidytext",
-    "explanation": "Reorder factor levels within facets for better plotting (used with scale_x_reordered)."
+    "explanation": "Reorder a column before plotting with faceting, such that the values are ordered within each facet. This requires two functions:reorder_withinapplied to the column, then eitherscale_x_reorderedorscale_y_reorderedadded to the plot. This is implemented as a bit of a hack: it appends ___ and then the facet at the end of each string."
   },
   {
     "function": "scale_x_reordered",
@@ -482,7 +482,7 @@
   {
     "function": "LDA",
     "package": "topicmodels",
-    "explanation": "Fit a Latent Dirichlet Allocation topic model to a document-term matrix."
+    "explanation": "Estimate a LDA model using for example the VEM algorithm or Gibbs Sampling."
   },
   {
     "function": "collect_metrics",
@@ -497,7 +497,7 @@
   {
     "function": "fit_resamples",
     "package": "tune",
-    "explanation": "Fit a workflow across resamples (e.g., v-fold CV) and compute metrics. Workflows keep preprocessing and model spec together, making resampling/tuning reproducible."
+    "explanation": "fit_resamples()computes a set of performance metrics across one or more resamples. It does not perform any tuning (seetune_grid()andtune_bayes()for that), and is instead used for fitting a single model+recipe or model+formula combination across many resamples."
   },
   {
     "function": "Terms",
@@ -1027,7 +1027,7 @@
   {
     "function": "head",
     "package": "utils",
-    "explanation": "Return the first n rows/elements."
+    "explanation": "Returns the first or last parts of a vector, matrix, table, data frame or function. Sincehead()andtail()are generic functions, they may also have been extended to other classes."
   },
   {
     "function": "pairwise_pmi",
@@ -1062,7 +1062,7 @@
   {
     "function": "workflow",
     "package": "workflows",
-    "explanation": "Bundle a preprocessor (recipe) and a model together. Workflows keep preprocessing and model spec together, making resampling/tuning reproducible."
+    "explanation": "Aworkflowis a container object that aggregates information required to fit and predict from a model. This information might be a recipe used in preprocessing, specified throughadd_recipe(), or the model specification to fit, specified throughadd_model(), or a tailor used in postprocessing, specified throughadd_tailor()."
   },
   {
     "function": "conf_mat_resampled",

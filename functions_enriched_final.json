@@ -1,0 +1,1918 @@
+[
+  {
+    "function": "cast_sparse",
+    "package": "Matrix/rsparse",
+    "explanation": "Create a sparse matrix from tidy triplets (row, col, value).",
+    "arguments": []
+  },
+  {
+    "function": "as.matrix",
+    "package": "base",
+    "explanation": "Coerce to a matrix type.",
+    "arguments": []
+  },
+  {
+    "function": "as.numeric",
+    "package": "base",
+    "explanation": "Coerce to numeric type.",
+    "arguments": []
+  },
+  {
+    "function": "c",
+    "package": "base",
+    "explanation": "Combine values into a vector.",
+    "arguments": []
+  },
+  {
+    "function": "data",
+    "package": "base",
+    "explanation": "Load example datasets from a package.",
+    "arguments": []
+  },
+  {
+    "function": "mean",
+    "package": "base",
+    "explanation": "Arithmetic mean.",
+    "arguments": [
+      {
+        "name": "x",
+        "description": "Numeric vector"
+      },
+      {
+        "name": "na.rm",
+        "description": "Remove NA values? (default FALSE)"
+      },
+      {
+        "name": "...",
+        "description": "Additional arguments"
+      }
+    ]
+  },
+  {
+    "function": "nchar",
+    "package": "base",
+    "explanation": "Count the number of characters (bytes in current encoding).",
+    "arguments": []
+  },
+  {
+    "function": "paste",
+    "package": "base",
+    "explanation": "Concatenate strings together with a separator.",
+    "arguments": [
+      {
+        "name": "...",
+        "description": "Vectors to concatenate"
+      },
+      {
+        "name": "sep",
+        "description": "Separator between elements (default ' ')"
+      },
+      {
+        "name": "collapse",
+        "description": "Optional string to collapse results into single string"
+      }
+    ]
+  },
+  {
+    "function": "paste0",
+    "package": "base",
+    "explanation": "Concatenate strings without a separator.",
+    "arguments": []
+  },
+  {
+    "function": "rowSums",
+    "package": "base",
+    "explanation": "Sum across rows of a matrix/data frame.",
+    "arguments": []
+  },
+  {
+    "function": "set.seed",
+    "package": "base",
+    "explanation": "Set the random number generator seed for reproducibility.",
+    "arguments": []
+  },
+  {
+    "function": "sqrt",
+    "package": "base",
+    "explanation": "Square root; also used for vector norms.",
+    "arguments": []
+  },
+  {
+    "function": "sum",
+    "package": "base",
+    "explanation": "Sum of elements.",
+    "arguments": [
+      {
+        "name": "...",
+        "description": "Numeric vectors or values to sum"
+      },
+      {
+        "name": "na.rm",
+        "description": "Remove NA values? (default FALSE)"
+      }
+    ]
+  },
+  {
+    "function": "tidy",
+    "package": "broom",
+    "explanation": "Coerce model objects into tidy data frames (used by tidytext/topicmodels).",
+    "arguments": []
+  },
+  {
+    "function": "naive_Bayes",
+    "package": "discrim",
+    "explanation": "Naïve Bayes classifier specification (assumes conditional independence of predictors). Specify engine (e.g., `LiblineaR`, `ranger`, `naivebayes`) and mode; keep a null/baseline model for comparison.",
+    "arguments": []
+  },
+  {
+    "function": "add_count",
+    "package": "dplyr",
+    "explanation": "Add a column n with counts per group while keeping original rows. Adds frequency column `n` while keeping all rows; use `sort = TRUE` to order by counts.",
+    "arguments": []
+  },
+  {
+    "function": "anti_join",
+    "package": "dplyr",
+    "explanation": "Filter left table to rows that do **not** have a match in the right table; no columns are added. Matches rows from two tables based on key columns specified with `by =` (e.g., `by = c(\"id\" = \"id\")`). Common args: `by`, `suffix` (to disambiguate duplicate column names), `keep = FALSE` (keep join keys from both sides), and `relationship` (1-to-1, 1-to-many checks). Pitfalls: duplicated keys can multiply rows; mismatched types prevent joins; use `count()` first to inspect key uniqueness. Typical use: find missing/extra keys, do QA checks.",
+    "arguments": [
+      {
+        "name": "x",
+        "description": "Left data frame"
+      },
+      {
+        "name": "y",
+        "description": "Right data frame"
+      },
+      {
+        "name": "by",
+        "description": "Join key(s)"
+      }
+    ]
+  },
+  {
+    "function": "arrange",
+    "package": "dplyr",
+    "explanation": "Sort rows by one or more columns; use desc(x) or negative number for descending. Use `desc(x)` for descending. Sorting is stable; missing values are placed at the end by default.",
+    "arguments": [
+      {
+        "name": ".data",
+        "description": "Data frame"
+      },
+      {
+        "name": "...",
+        "description": "Variables to sort by. Use desc(x) for descending order"
+      }
+    ]
+  },
+  {
+    "function": "count",
+    "package": "dplyr",
+    "explanation": "Count rows by group; equivalent to group_by(...) |> summarise(n = n()). Shorthand for `group_by(...) |> summarise(n = n())`. Use `sort = TRUE` to order by frequency.",
+    "arguments": [
+      {
+        "name": "x",
+        "description": "Data frame"
+      },
+      {
+        "name": "...",
+        "description": "Variables to count by"
+      },
+      {
+        "name": "sort",
+        "description": "If TRUE, sort output in descending order of n"
+      },
+      {
+        "name": "name",
+        "description": "Name of count column (default 'n')"
+      }
+    ]
+  },
+  {
+    "function": "filter",
+    "package": "dplyr",
+    "explanation": "Keep rows that satisfy logical conditions. Keep rows by logical conditions; combine with `&`, `|`, `!`. Use `%in%` for set membership.",
+    "arguments": [
+      {
+        "name": ".data",
+        "description": "Data frame to filter"
+      },
+      {
+        "name": "...",
+        "description": "Logical predicates to filter by (e.g., x > 5, name == 'Alice')"
+      },
+      {
+        "name": ".preserve",
+        "description": "Whether to preserve grouping structure"
+      }
+    ]
+  },
+  {
+    "function": "full_join",
+    "package": "dplyr",
+    "explanation": "Keep all rows from both tables (SQL full outer join). Matches rows from two tables based on key columns specified with `by =` (e.g., `by = c(\"id\" = \"id\")`). Common args: `by`, `suffix` (to disambiguate duplicate column names), `keep = FALSE` (keep join keys from both sides), and `relationship` (1-to-1, 1-to-many checks). Pitfalls: duplicated keys can multiply rows; mismatched types prevent joins; use `count()` first to inspect key uniqueness. Typical use: union-like merge while preserving unmatched records from both sides.",
+    "arguments": []
+  },
+  {
+    "function": "group_by",
+    "package": "dplyr",
+    "explanation": "Group rows by one or more variables so that summaries are computed per group. Common args: `.add = FALSE`. Pitfall: forgetting to `ungroup()` before later steps can yield unexpected summaries.",
+    "arguments": [
+      {
+        "name": ".data",
+        "description": "Data frame"
+      },
+      {
+        "name": "...",
+        "description": "Variables to group by"
+      },
+      {
+        "name": ".add",
+        "description": "If TRUE, add to existing groups rather than replace"
+      }
+    ]
+  },
+  {
+    "function": "inner_join",
+    "package": "dplyr",
+    "explanation": "Return only rows where keys appear in both tables (intersection). Matches rows from two tables based on key columns specified with `by =` (e.g., `by = c(\"id\" = \"id\")`). Common args: `by`, `suffix` (to disambiguate duplicate column names), `keep = FALSE` (keep join keys from both sides), and `relationship` (1-to-1, 1-to-many checks). Pitfalls: duplicated keys can multiply rows; mismatched types prevent joins; use `count()` first to inspect key uniqueness. Typical use: enrich observations only when a match exists.",
+    "arguments": [
+      {
+        "name": "x",
+        "description": "Left data frame"
+      },
+      {
+        "name": "y",
+        "description": "Right data frame"
+      },
+      {
+        "name": "by",
+        "description": "Join key(s)"
+      }
+    ]
+  },
+  {
+    "function": "left_join",
+    "package": "dplyr",
+    "explanation": "Keep all rows from the left table and add matching columns from the right; unmatched rows get `NA`. Matches rows from two tables based on key columns specified with `by =` (e.g., `by = c(\"id\" = \"id\")`). Common args: `by`, `suffix` (to disambiguate duplicate column names), `keep = FALSE` (keep join keys from both sides), and `relationship` (1-to-1, 1-to-many checks). Pitfalls: duplicated keys can multiply rows; mismatched types prevent joins; use `count()` first to inspect key uniqueness. Typical use: add lookup fields without dropping left rows.",
+    "arguments": [
+      {
+        "name": "x",
+        "description": "Left data frame"
+      },
+      {
+        "name": "y",
+        "description": "Right data frame"
+      },
+      {
+        "name": "by",
+        "description": "Join key(s). Use named vector for different column names: c('left_key' = 'right_key')"
+      },
+      {
+        "name": "suffix",
+        "description": "Suffix to add to duplicate column names from each table"
+      }
+    ]
+  },
+  {
+    "function": "mutate",
+    "package": "dplyr",
+    "explanation": "Add new columns or modify existing ones, column-wise. Create/modify columns; use `case_when()` for multi-branch logic and `across()` to apply functions to multiple columns.",
+    "arguments": [
+      {
+        "name": ".data",
+        "description": "Data frame"
+      },
+      {
+        "name": "...",
+        "description": "Name-value pairs of expressions (e.g., new_col = x * 2)"
+      },
+      {
+        "name": ".before",
+        "description": "Column to insert new variables before"
+      },
+      {
+        "name": ".after",
+        "description": "Column to insert new variables after"
+      }
+    ]
+  },
+  {
+    "function": "rename",
+    "package": "dplyr",
+    "explanation": "Rename columns by supplying new = old. Syntax: `new = old`. Use `rename_with()` to rename via a function (e.g., `tolower`).",
+    "arguments": []
+  },
+  {
+    "function": "right_join",
+    "package": "dplyr",
+    "explanation": "Keep all rows from the right table and add matching columns from the left; unmatched rows get `NA`. Matches rows from two tables based on key columns specified with `by =` (e.g., `by = c(\"id\" = \"id\")`). Common args: `by`, `suffix` (to disambiguate duplicate column names), `keep = FALSE` (keep join keys from both sides), and `relationship` (1-to-1, 1-to-many checks). Pitfalls: duplicated keys can multiply rows; mismatched types prevent joins; use `count()` first to inspect key uniqueness. Useful when the right table defines the universe of interest.",
+    "arguments": []
+  },
+  {
+    "function": "select",
+    "package": "dplyr",
+    "explanation": "Keep or reorder columns by name or helper (e.g., starts_with). Helpers: `starts_with()`, `ends_with()`, `contains()`, `everything()`. Use `-col` to deselect columns.",
+    "arguments": [
+      {
+        "name": ".data",
+        "description": "Data frame"
+      },
+      {
+        "name": "...",
+        "description": "Column names or selection helpers (starts_with, ends_with, contains, etc.)"
+      }
+    ]
+  },
+  {
+    "function": "semi_join",
+    "package": "dplyr",
+    "explanation": "Filter left table to rows that have a match in the right table; no columns are added. Matches rows from two tables based on key columns specified with `by =` (e.g., `by = c(\"id\" = \"id\")`). Common args: `by`, `suffix` (to disambiguate duplicate column names), `keep = FALSE` (keep join keys from both sides), and `relationship` (1-to-1, 1-to-many checks). Pitfalls: duplicated keys can multiply rows; mismatched types prevent joins; use `count()` first to inspect key uniqueness. Typical use: keep only left rows that exist in a reference set.",
+    "arguments": []
+  },
+  {
+    "function": "slice_max",
+    "package": "dplyr",
+    "explanation": "Keep the top n rows by a variable, optionally per group. Select top `n` or `prop` rows by `order_by`, optionally per group (`by`). Prefer over deprecated `top_n()`.",
+    "arguments": []
+  },
+  {
+    "function": "slice_min",
+    "package": "dplyr",
+    "explanation": "Keep the bottom n rows by a variable, optionally per group. Select bottom `n` or `prop` rows by `order_by`, optionally per group (`by`).",
+    "arguments": []
+  },
+  {
+    "function": "summarize",
+    "package": "dplyr",
+    "explanation": "Compute summary rows (e.g., n(), mean(), sum()) for each group (or whole data if not grouped). Use with aggregators like `n()`, `mean()`, `sum()`, `median()`. Common args: `.groups = \"drop\"` to ungroup automatically. Spelling `summarise()` also valid.",
+    "arguments": [
+      {
+        "name": ".data",
+        "description": "Data frame"
+      },
+      {
+        "name": "...",
+        "description": "Name-value pairs of summary functions (e.g., mean_x = mean(x))"
+      },
+      {
+        "name": ".groups",
+        "description": "Grouping structure after summarizing: 'drop_last', 'drop', 'keep', 'rowwise'"
+      }
+    ]
+  },
+  {
+    "function": "top_n",
+    "package": "dplyr",
+    "explanation": "Select top n rows by a variable (deprecated in favor of slice_max/slice_min).",
+    "arguments": []
+  },
+  {
+    "function": "ungroup",
+    "package": "dplyr",
+    "explanation": "Remove any existing grouping from a data frame. Removes grouping. Use after `summarize()` to avoid grouped behavior downstream.",
+    "arguments": []
+  },
+  {
+    "function": "fct_reorder",
+    "package": "forcats",
+    "explanation": "Reorder factor levels by another variable (e.g., mean of a numeric).",
+    "arguments": []
+  },
+  {
+    "function": "future_map",
+    "package": "furrr",
+    "explanation": "Parallel version of purrr::map using the future framework.",
+    "arguments": []
+  },
+  {
+    "function": "plan",
+    "package": "future",
+    "explanation": "Define the parallel execution strategy (e.g., multisession).",
+    "arguments": []
+  },
+  {
+    "function": "aes",
+    "package": "ggplot2",
+    "explanation": "Define aesthetic mappings (e.g., x, y, color, fill) for a ggplot.",
+    "arguments": [
+      {
+        "name": "x",
+        "description": "Variable for x-axis"
+      },
+      {
+        "name": "y",
+        "description": "Variable for y-axis"
+      },
+      {
+        "name": "...",
+        "description": "Other aesthetics: color, fill, size, alpha, etc."
+      }
+    ]
+  },
+  {
+    "function": "autoplot",
+    "package": "ggplot2",
+    "explanation": "Automatically produce a ggplot for certain object types (e.g., ROC curves).",
+    "arguments": []
+  },
+  {
+    "function": "coord_flip",
+    "package": "ggplot2",
+    "explanation": "Swap x and y axes for horizontal plots.",
+    "arguments": []
+  },
+  {
+    "function": "facet_wrap",
+    "package": "ggplot2",
+    "explanation": "Make small multiples by wrapping facets across rows/columns.",
+    "arguments": [
+      {
+        "name": "facets",
+        "description": "Variables to facet by (use vars() or formula)"
+      },
+      {
+        "name": "nrow",
+        "description": "Number of rows"
+      },
+      {
+        "name": "ncol",
+        "description": "Number of columns"
+      },
+      {
+        "name": "scales",
+        "description": "'fixed', 'free', 'free_x', or 'free_y'"
+      }
+    ]
+  },
+  {
+    "function": "geom_abline",
+    "package": "ggplot2",
+    "explanation": "Add a straight line with given slope and intercept (often the y = x line).",
+    "arguments": []
+  },
+  {
+    "function": "geom_col",
+    "package": "ggplot2",
+    "explanation": "Bar plot where bar heights represent precomputed values (no statistical transformation).",
+    "arguments": [
+      {
+        "name": "mapping",
+        "description": "Aesthetic mappings"
+      },
+      {
+        "name": "data",
+        "description": "Data for this layer"
+      },
+      {
+        "name": "position",
+        "description": "Position adjustment: 'stack', 'dodge', 'fill'"
+      }
+    ]
+  },
+  {
+    "function": "geom_point",
+    "package": "ggplot2",
+    "explanation": "Scatterplot layer to draw points.",
+    "arguments": [
+      {
+        "name": "mapping",
+        "description": "Aesthetic mappings"
+      },
+      {
+        "name": "data",
+        "description": "Data for this layer"
+      },
+      {
+        "name": "size",
+        "description": "Point size"
+      },
+      {
+        "name": "alpha",
+        "description": "Transparency (0-1)"
+      }
+    ]
+  },
+  {
+    "function": "ggplot",
+    "package": "ggplot2",
+    "explanation": "Create a ggplot object for layered grammar-of-graphics plots.",
+    "arguments": [
+      {
+        "name": "data",
+        "description": "Default dataset for plot"
+      },
+      {
+        "name": "mapping",
+        "description": "Default aesthetic mappings (from aes())"
+      }
+    ]
+  },
+  {
+    "function": "labs",
+    "package": "ggplot2",
+    "explanation": "Add titles, axis labels, captions, and legend titles.",
+    "arguments": [
+      {
+        "name": "title",
+        "description": "Plot title"
+      },
+      {
+        "name": "subtitle",
+        "description": "Plot subtitle"
+      },
+      {
+        "name": "x",
+        "description": "X-axis label"
+      },
+      {
+        "name": "y",
+        "description": "Y-axis label"
+      },
+      {
+        "name": "caption",
+        "description": "Caption below plot"
+      }
+    ]
+  },
+  {
+    "function": "fit",
+    "package": "parsnip",
+    "explanation": "Train a model or workflow on a dataset. Workflows keep preprocessing and model spec together, making resampling/tuning reproducible.",
+    "arguments": [
+      {
+        "name": "object",
+        "description": "Model specification or workflow"
+      },
+      {
+        "name": "formula",
+        "description": "Model formula (if not using workflow)"
+      },
+      {
+        "name": "data",
+        "description": "Training data"
+      }
+    ]
+  },
+  {
+    "function": "null_model",
+    "package": "parsnip",
+    "explanation": "Specify a model that predicts the average (regression) or majority class (classification). Specify engine (e.g., `LiblineaR`, `ranger`, `naivebayes`) and mode; keep a null/baseline model for comparison.",
+    "arguments": []
+  },
+  {
+    "function": "rand_forest",
+    "package": "parsnip",
+    "explanation": "Random forest model specification for regression/classification. Specify engine (e.g., `LiblineaR`, `ranger`, `naivebayes`) and mode; keep a null/baseline model for comparison.",
+    "arguments": [
+      {
+        "name": "mode",
+        "description": "'classification' or 'regression'"
+      },
+      {
+        "name": "mtry",
+        "description": "Number of predictors randomly sampled at each split"
+      },
+      {
+        "name": "trees",
+        "description": "Number of trees in the forest"
+      },
+      {
+        "name": "min_n",
+        "description": "Minimum number of data points in a node"
+      }
+    ]
+  },
+  {
+    "function": "set_engine",
+    "package": "parsnip",
+    "explanation": "Choose the underlying implementation/library for a model. Specify engine (e.g., `LiblineaR`, `ranger`, `naivebayes`) and mode; keep a null/baseline model for comparison.",
+    "arguments": [
+      {
+        "name": "object",
+        "description": "Model specification"
+      },
+      {
+        "name": "engine",
+        "description": "Engine name (e.g., 'ranger', 'glmnet', 'keras')"
+      },
+      {
+        "name": "...",
+        "description": "Engine-specific arguments"
+      }
+    ]
+  },
+  {
+    "function": "set_mode",
+    "package": "parsnip",
+    "explanation": "Set the mode: 'regression' or 'classification' for a model. Specify engine (e.g., `LiblineaR`, `ranger`, `naivebayes`) and mode; keep a null/baseline model for comparison.",
+    "arguments": [
+      {
+        "name": "object",
+        "description": "Model specification"
+      },
+      {
+        "name": "mode",
+        "description": "'classification' or 'regression'"
+      }
+    ]
+  },
+  {
+    "function": "svm_linear",
+    "package": "parsnip",
+    "explanation": "Linear Support Vector Machine model specification. Specify engine (e.g., `LiblineaR`, `ranger`, `naivebayes`) and mode; keep a null/baseline model for comparison.",
+    "arguments": []
+  },
+  {
+    "function": "map2",
+    "package": "purrr",
+    "explanation": "Map over two inputs in parallel.",
+    "arguments": []
+  },
+  {
+    "function": "pluck",
+    "package": "purrr",
+    "explanation": "Extract elements from nested data structures by position/name.",
+    "arguments": []
+  },
+  {
+    "function": "safely",
+    "package": "purrr",
+    "explanation": "Wrap a function to capture errors and return results + error objects.",
+    "arguments": []
+  },
+  {
+    "function": "corpus",
+    "package": "quanteda",
+    "explanation": "Create a quanteda corpus object from texts (and optional docvars).",
+    "arguments": []
+  },
+  {
+    "function": "tokens",
+    "package": "quanteda",
+    "explanation": "Tokenize a corpus into tokens (fast, flexible).",
+    "arguments": []
+  },
+  {
+    "function": "read_csv",
+    "package": "readr",
+    "explanation": "Fast read of a CSV file into a tibble; guesses column types.",
+    "arguments": []
+  },
+  {
+    "function": "readtext",
+    "package": "readtext",
+    "explanation": "Read many text formats (txt, pdf, docx, json) into a data frame with docvars.",
+    "arguments": []
+  },
+  {
+    "function": "bake",
+    "package": "recipes",
+    "explanation": "Apply estimated preprocessing steps to data. Recipes define preprocessing independent of the model; `prep()` estimates parameters on training data; `bake()` applies them.",
+    "arguments": [
+      {
+        "name": "object",
+        "description": "A prepped recipe"
+      },
+      {
+        "name": "new_data",
+        "description": "Data to apply preprocessing to"
+      },
+      {
+        "name": "...",
+        "description": "Additional arguments"
+      }
+    ]
+  },
+  {
+    "function": "prep",
+    "package": "recipes",
+    "explanation": "Estimate preprocessing steps using training data. Recipes define preprocessing independent of the model; `prep()` estimates parameters on training data; `bake()` applies them.",
+    "arguments": [
+      {
+        "name": "x",
+        "description": "A recipe object"
+      },
+      {
+        "name": "training",
+        "description": "Training data to estimate parameters from"
+      },
+      {
+        "name": "verbose",
+        "description": "Print progress?"
+      }
+    ]
+  },
+  {
+    "function": "recipe",
+    "package": "recipes",
+    "explanation": "Define a sequence of preprocessing steps for modeling. Recipes define preprocessing independent of the model; `prep()` estimates parameters on training data; `bake()` applies them.",
+    "arguments": [
+      {
+        "name": "formula",
+        "description": "Model formula (e.g., outcome ~ predictors)"
+      },
+      {
+        "name": "data",
+        "description": "Training data to base recipe on"
+      }
+    ]
+  },
+  {
+    "function": "step_normalize",
+    "package": "recipes",
+    "explanation": "Center and scale numeric predictors. Recipes define preprocessing independent of the model; `prep()` estimates parameters on training data; `bake()` applies them.",
+    "arguments": []
+  },
+  {
+    "function": "initial_split",
+    "package": "rsample",
+    "explanation": "Split data into training and testing sets.",
+    "arguments": [
+      {
+        "name": "data",
+        "description": "Data frame to split"
+      },
+      {
+        "name": "prop",
+        "description": "Proportion for training set (default 0.75)"
+      },
+      {
+        "name": "strata",
+        "description": "Variable for stratified sampling"
+      }
+    ]
+  },
+  {
+    "function": "testing",
+    "package": "rsample",
+    "explanation": "Extract the testing portion from an rsample split.",
+    "arguments": []
+  },
+  {
+    "function": "training",
+    "package": "rsample",
+    "explanation": "Extract the training portion from an rsample split.",
+    "arguments": []
+  },
+  {
+    "function": "vfold_cv",
+    "package": "rsample",
+    "explanation": "Create v-fold cross-validation resamples. Use with `yardstick` metrics; always evaluate on resamples or a test set to avoid optimistic bias.",
+    "arguments": [
+      {
+        "name": "data",
+        "description": "Data frame"
+      },
+      {
+        "name": "v",
+        "description": "Number of folds (default 10)"
+      },
+      {
+        "name": "repeats",
+        "description": "Number of times to repeat v-fold CV"
+      },
+      {
+        "name": "strata",
+        "description": "Variable for stratified sampling"
+      }
+    ]
+  },
+  {
+    "function": "slide",
+    "package": "slider",
+    "explanation": "Apply a sliding window over a vector/list to compute results per window.",
+    "arguments": []
+  },
+  {
+    "function": "stopwords",
+    "package": "stopwords",
+    "explanation": "Get stopword lists for different languages and sources.",
+    "arguments": [
+      {
+        "name": "language",
+        "description": "Language code (ISO 639-1), e.g., 'en', 'es', 'fr'"
+      },
+      {
+        "name": "source",
+        "description": "Stopword source: 'snowball', 'stopwords-iso', 'smart', etc."
+      }
+    ]
+  },
+  {
+    "function": "str_detect",
+    "package": "stringr",
+    "explanation": "Test whether a string contains a pattern (regex), returning TRUE/FALSE. Patterns are regular expressions by default; set `fixed()` for literal matching to avoid regex surprises.",
+    "arguments": [
+      {
+        "name": "string",
+        "description": "Character vector to search in"
+      },
+      {
+        "name": "pattern",
+        "description": "Pattern to look for (regex by default)"
+      },
+      {
+        "name": "negate",
+        "description": "If TRUE, return strings that DON'T match"
+      }
+    ]
+  },
+  {
+    "function": "str_flatten",
+    "package": "stringr",
+    "explanation": "Concatenate a character vector into a single string with a separator. Patterns are regular expressions by default; set `fixed()` for literal matching to avoid regex surprises.",
+    "arguments": []
+  },
+  {
+    "function": "str_length",
+    "package": "stringr",
+    "explanation": "Count the number of characters in a string (vectorized). Patterns are regular expressions by default; set `fixed()` for literal matching to avoid regex surprises.",
+    "arguments": []
+  },
+  {
+    "function": "str_locate_all",
+    "package": "stringr",
+    "explanation": "Locate start/end positions of all matches for a regex in each string. Patterns are regular expressions by default; set `fixed()` for literal matching to avoid regex surprises.",
+    "arguments": []
+  },
+  {
+    "function": "str_pad",
+    "package": "stringr",
+    "explanation": "Pad strings to a fixed width on the left, right, or both. Patterns are regular expressions by default; set `fixed()` for literal matching to avoid regex surprises.",
+    "arguments": []
+  },
+  {
+    "function": "str_replace",
+    "package": "stringr",
+    "explanation": "Replace the first match of a pattern with a replacement. Patterns are regular expressions by default; set `fixed()` for literal matching to avoid regex surprises.",
+    "arguments": [
+      {
+        "name": "string",
+        "description": "Character vector"
+      },
+      {
+        "name": "pattern",
+        "description": "Pattern to find (regex)"
+      },
+      {
+        "name": "replacement",
+        "description": "String to replace with"
+      }
+    ]
+  },
+  {
+    "function": "str_replace_all",
+    "package": "stringr",
+    "explanation": "Replace all matches of a pattern (regex) with a replacement. Patterns are regular expressions by default; set `fixed()` for literal matching to avoid regex surprises.",
+    "arguments": [
+      {
+        "name": "string",
+        "description": "Character vector"
+      },
+      {
+        "name": "pattern",
+        "description": "Pattern to find (regex)"
+      },
+      {
+        "name": "replacement",
+        "description": "String to replace with"
+      }
+    ]
+  },
+  {
+    "function": "str_squish",
+    "package": "stringr",
+    "explanation": "Trim and collapse multiple spaces to a single space within strings. Patterns are regular expressions by default; set `fixed()` for literal matching to avoid regex surprises.",
+    "arguments": [
+      {
+        "name": "string",
+        "description": "Character vector"
+      }
+    ]
+  },
+  {
+    "function": "str_sub",
+    "package": "stringr",
+    "explanation": "Extract or replace substrings by position (start/end indexes).",
+    "arguments": []
+  },
+  {
+    "function": "str_trim",
+    "package": "stringr",
+    "explanation": "Trim whitespace from start/end of strings (left, right, or both). Patterns are regular expressions by default; set `fixed()` for literal matching to avoid regex surprises.",
+    "arguments": [
+      {
+        "name": "string",
+        "description": "Character vector"
+      },
+      {
+        "name": "side",
+        "description": "Which side to trim: 'both', 'left', or 'right'"
+      }
+    ]
+  },
+  {
+    "function": "str_view_all",
+    "package": "stringr",
+    "explanation": "Visually display regex matches in strings (interactive printing).",
+    "arguments": []
+  },
+  {
+    "function": "step_stopwords",
+    "package": "textrecipes",
+    "explanation": "Remove stop words from tokenized text using a chosen lexicon. Recipes define preprocessing independent of the model; `prep()` estimates parameters on training data; `bake()` applies them.",
+    "arguments": [
+      {
+        "name": "recipe",
+        "description": "A recipe object"
+      },
+      {
+        "name": "...",
+        "description": "Token columns to remove stopwords from"
+      },
+      {
+        "name": "language",
+        "description": "Language for stopwords (default 'en')"
+      },
+      {
+        "name": "custom_stopword_source",
+        "description": "Custom stopword list"
+      }
+    ]
+  },
+  {
+    "function": "step_tfidf",
+    "package": "textrecipes",
+    "explanation": "Create TF-IDF features from token counts. Recipes define preprocessing independent of the model; `prep()` estimates parameters on training data; `bake()` applies them.",
+    "arguments": [
+      {
+        "name": "recipe",
+        "description": "A recipe object"
+      },
+      {
+        "name": "...",
+        "description": "Token columns to compute TF-IDF for"
+      }
+    ]
+  },
+  {
+    "function": "step_tokenfilter",
+    "package": "textrecipes",
+    "explanation": "Keep only the most frequent tokens (e.g., top 1,000). Recipes define preprocessing independent of the model; `prep()` estimates parameters on training data; `bake()` applies them.",
+    "arguments": [
+      {
+        "name": "recipe",
+        "description": "A recipe object"
+      },
+      {
+        "name": "...",
+        "description": "Token columns to filter"
+      },
+      {
+        "name": "max_tokens",
+        "description": "Maximum number of tokens to keep"
+      },
+      {
+        "name": "min_times",
+        "description": "Minimum times a token must appear"
+      }
+    ]
+  },
+  {
+    "function": "step_tokenize",
+    "package": "textrecipes",
+    "explanation": "Tokenize text columns into tokens. Recipes define preprocessing independent of the model; `prep()` estimates parameters on training data; `bake()` applies them.",
+    "arguments": [
+      {
+        "name": "recipe",
+        "description": "A recipe object"
+      },
+      {
+        "name": "...",
+        "description": "One or more text columns to tokenize"
+      },
+      {
+        "name": "token",
+        "description": "Type of token: 'words', 'characters', 'ngrams', etc."
+      },
+      {
+        "name": "options",
+        "description": "List of options passed to tokenizer"
+      }
+    ]
+  },
+  {
+    "function": "glimpse",
+    "package": "tibble",
+    "explanation": "Preview a tibble: columns, types, and examples of values.",
+    "arguments": []
+  },
+  {
+    "function": "tibble",
+    "package": "tibble",
+    "explanation": "Create a tibble (modern data frame).",
+    "arguments": []
+  },
+  {
+    "function": "nest",
+    "package": "tidyr",
+    "explanation": "Pack a set of columns into a single list-column, creating one row per group.",
+    "arguments": []
+  },
+  {
+    "function": "pivot_longer",
+    "package": "tidyr",
+    "explanation": "Turn wide data into long (tidy) format by gathering columns into key-value pairs. Common args: `names_from`, `values_from`; resolve duplicates with `values_fn = list(value = sum)` and `values_fill` for missing combinations.",
+    "arguments": [
+      {
+        "name": "data",
+        "description": "Data frame"
+      },
+      {
+        "name": "cols",
+        "description": "Columns to pivot into longer format"
+      },
+      {
+        "name": "names_to",
+        "description": "Name of new column for old column names"
+      },
+      {
+        "name": "values_to",
+        "description": "Name of new column for cell values"
+      }
+    ]
+  },
+  {
+    "function": "pivot_wider",
+    "package": "tidyr",
+    "explanation": "Turn long data into wide format by spreading values across multiple columns. Common args: `names_from`, `values_from`; resolve duplicates with `values_fn = list(value = sum)` and `values_fill` for missing combinations.",
+    "arguments": [
+      {
+        "name": "data",
+        "description": "Data frame"
+      },
+      {
+        "name": "names_from",
+        "description": "Column whose values become new column names"
+      },
+      {
+        "name": "values_from",
+        "description": "Column whose values fill the cells"
+      }
+    ]
+  },
+  {
+    "function": "unite",
+    "package": "tidyr",
+    "explanation": "Combine multiple columns into a single column with a separator.",
+    "arguments": []
+  },
+  {
+    "function": "unnest",
+    "package": "tidyr",
+    "explanation": "Unpack a list-column back into regular rows and columns.",
+    "arguments": [
+      {
+        "name": "data",
+        "description": "Data frame with list-columns"
+      },
+      {
+        "name": "cols",
+        "description": "List-columns to unnest"
+      },
+      {
+        "name": "keep_empty",
+        "description": "Keep rows with empty lists?"
+      }
+    ]
+  },
+  {
+    "function": "get_sentiments",
+    "package": "tidytext",
+    "explanation": "Load sentiment lexicons such as 'bing', 'afinn', or 'nrc'.",
+    "arguments": [
+      {
+        "name": "lexicon",
+        "description": "Which sentiment lexicon to use: 'afinn', 'bing', or 'nrc'"
+      }
+    ]
+  },
+  {
+    "function": "reorder_within",
+    "package": "tidytext",
+    "explanation": "Reorder factor levels within facets for better plotting (used with scale_x_reordered).",
+    "arguments": []
+  },
+  {
+    "function": "scale_x_reordered",
+    "package": "tidytext",
+    "explanation": "Helper scale for reorder_within to work in facets.",
+    "arguments": []
+  },
+  {
+    "function": "unnest_tokens",
+    "package": "tidytext",
+    "explanation": "Split text into tokens (e.g., words, n-grams) producing one-token-per-row. Common args: `token` (e.g., \"words\", \"ngrams\"), `n` for n-grams, `to_lower = TRUE/FALSE`. Output is one-token-per-row.",
+    "arguments": [
+      {
+        "name": "tbl",
+        "description": "Data frame containing text column"
+      },
+      {
+        "name": "output",
+        "description": "Name of new column for tokens"
+      },
+      {
+        "name": "input",
+        "description": "Name of column containing text to tokenize"
+      },
+      {
+        "name": "token",
+        "description": "Unit for tokenizing: 'words', 'characters', 'ngrams', 'sentences', etc."
+      },
+      {
+        "name": "to_lower",
+        "description": "Whether to convert tokens to lowercase (default TRUE)"
+      },
+      {
+        "name": "n",
+        "description": "Number of words in each n-gram (when token = 'ngrams')"
+      }
+    ]
+  },
+  {
+    "function": "tokenize_words",
+    "package": "tokenizers",
+    "explanation": "Tokenize text into words; returns a list of character vectors.",
+    "arguments": []
+  },
+  {
+    "function": "LDA",
+    "package": "topicmodels",
+    "explanation": "Fit a Latent Dirichlet Allocation topic model to a document-term matrix.",
+    "arguments": []
+  },
+  {
+    "function": "collect_metrics",
+    "package": "tune",
+    "explanation": "Extract metrics (e.g., rmse, accuracy, roc_auc) from resampling objects. Use with `yardstick` metrics; always evaluate on resamples or a test set to avoid optimistic bias.",
+    "arguments": []
+  },
+  {
+    "function": "collect_predictions",
+    "package": "tune",
+    "explanation": "Extract out-of-fold predictions from resampling objects. Use with `yardstick` metrics; always evaluate on resamples or a test set to avoid optimistic bias.",
+    "arguments": []
+  },
+  {
+    "function": "fit_resamples",
+    "package": "tune",
+    "explanation": "Fit a workflow across resamples (e.g., v-fold CV) and compute metrics. Workflows keep preprocessing and model spec together, making resampling/tuning reproducible.",
+    "arguments": [
+      {
+        "name": "object",
+        "description": "Workflow or model specification"
+      },
+      {
+        "name": "resamples",
+        "description": "Resampling object (from vfold_cv, etc.)"
+      },
+      {
+        "name": "metrics",
+        "description": "Metric set to compute"
+      },
+      {
+        "name": "control",
+        "description": "Control parameters"
+      }
+    ]
+  },
+  {
+    "function": "Terms",
+    "package": "stats",
+    "explanation": "Extract terms object from a model formula, containing information about predictors and response.",
+    "arguments": []
+  },
+  {
+    "function": "VCorpus",
+    "package": "tm",
+    "explanation": "Create a volatile corpus (stored in memory) from text sources for text mining with tm package.",
+    "arguments": []
+  },
+  {
+    "function": "VectorSource",
+    "package": "tm",
+    "explanation": "Create a source object from a character vector for use with corpus functions in tm package.",
+    "arguments": []
+  },
+  {
+    "function": "abs",
+    "package": "base",
+    "explanation": "Calculate absolute value of numeric values.",
+    "arguments": []
+  },
+  {
+    "function": "all_predictors",
+    "package": "recipes",
+    "explanation": "Select all predictor variables in a recipe (excludes outcome variable).",
+    "arguments": []
+  },
+  {
+    "function": "as.character",
+    "package": "base",
+    "explanation": "Convert objects to character type (strings).",
+    "arguments": []
+  },
+  {
+    "function": "as.dist",
+    "package": "stats",
+    "explanation": "Convert an object to a distance matrix (dist class).",
+    "arguments": []
+  },
+  {
+    "function": "austen_books",
+    "package": "janeaustenr",
+    "explanation": "Load Jane Austen's complete novels as a tidy data frame.",
+    "arguments": []
+  },
+  {
+    "function": "bind_rows",
+    "package": "dplyr",
+    "explanation": "Combine multiple data frames by stacking rows (rbind for tibbles).",
+    "arguments": []
+  },
+  {
+    "function": "bind_tf_idf",
+    "package": "tidytext",
+    "explanation": "Calculate term frequency-inverse document frequency (TF-IDF) for a tidy text dataset.",
+    "arguments": [
+      {
+        "name": "tbl",
+        "description": "Tidy text data frame"
+      },
+      {
+        "name": "term",
+        "description": "Column containing terms/tokens"
+      },
+      {
+        "name": "document",
+        "description": "Column containing document IDs"
+      },
+      {
+        "name": "n",
+        "description": "Column containing term counts per document"
+      }
+    ]
+  },
+  {
+    "function": "cast_dfm",
+    "package": "tidytext",
+    "explanation": "Convert tidy text data to a quanteda document-feature matrix (dfm).",
+    "arguments": []
+  },
+  {
+    "function": "cast_dtm",
+    "package": "tidytext",
+    "explanation": "Convert tidy text data to a document-term matrix (DTM) for topic modeling.",
+    "arguments": []
+  },
+  {
+    "function": "class",
+    "package": "base",
+    "explanation": "Get or set the class attribute of an R object.",
+    "arguments": []
+  },
+  {
+    "function": "compact",
+    "package": "purrr",
+    "explanation": "Remove NULL elements from a list.",
+    "arguments": []
+  },
+  {
+    "function": "complete",
+    "package": "tidyr",
+    "explanation": "Fill in missing combinations of data by adding explicit NA rows.",
+    "arguments": []
+  },
+  {
+    "function": "contains",
+    "package": "dplyr",
+    "explanation": "Select helper: match column names containing a literal string.",
+    "arguments": []
+  },
+  {
+    "function": "control_resamples",
+    "package": "tune",
+    "explanation": "Set control parameters for resampling functions like fit_resamples().",
+    "arguments": []
+  },
+  {
+    "function": "cosine_similarity",
+    "package": "PsychWordVec",
+    "explanation": "Cosine similarity/distance between two vectors. Mainly Cosine similarity is used to measure how similar the documents are irrespective of their size. ",
+    "arguments": []
+  },
+  {
+    "function": "cutree",
+    "package": "stats",
+    "explanation": "Cut a hierarchical clustering tree into groups of data.",
+    "arguments": []
+  },
+  {
+    "function": "data.frame",
+    "package": "base",
+    "explanation": "Create a traditional data frame (table with rows and columns).",
+    "arguments": []
+  },
+  {
+    "function": "desc",
+    "package": "dplyr",
+    "explanation": "Transform a vector into a format for descending order sorting.",
+    "arguments": []
+  },
+  {
+    "function": "dfm",
+    "package": "quanteda",
+    "explanation": "Create a document-feature matrix from tokens or corpus.",
+    "arguments": []
+  },
+  {
+    "function": "dfm_remove",
+    "package": "quanteda",
+    "explanation": "Remove features (words) from a document-feature matrix.",
+    "arguments": []
+  },
+  {
+    "function": "dim",
+    "package": "base",
+    "explanation": "Get dimensions (rows and columns) of a matrix or data frame.",
+    "arguments": []
+  },
+  {
+    "function": "dist",
+    "package": "stats",
+    "explanation": "Compute distance matrix between rows of a data matrix.",
+    "arguments": []
+  },
+  {
+    "function": "docnames",
+    "package": "quanteda",
+    "explanation": "Get or set document names in a quanteda corpus or tokens object.",
+    "arguments": []
+  },
+  {
+    "function": "element_text",
+    "package": "ggplot2",
+    "explanation": "Theme element for customizing text appearance in ggplot2 plots.",
+    "arguments": []
+  },
+  {
+    "function": "embedding_glove6b",
+    "package": "textrecipes",
+    "explanation": "Use pre-trained GloVe word embeddings (6B tokens) in text recipes.",
+    "arguments": []
+  },
+  {
+    "function": "everything",
+    "package": "dplyr",
+    "explanation": "Select helper: select all columns.",
+    "arguments": []
+  },
+  {
+    "function": "extract_fit_parsnip",
+    "package": "workflows",
+    "explanation": "Extract the fitted parsnip model from a fitted workflow.",
+    "arguments": []
+  },
+  {
+    "function": "factor",
+    "package": "base",
+    "explanation": "Create a factor (categorical variable with defined levels).",
+    "arguments": []
+  },
+  {
+    "function": "geom_crossbar",
+    "package": "ggplot2",
+    "explanation": "Draw vertical bars with horizontal lines at midpoint (for confidence intervals).",
+    "arguments": []
+  },
+  {
+    "function": "geom_histogram",
+    "package": "ggplot2",
+    "explanation": "Create histogram showing distribution of continuous variable.",
+    "arguments": []
+  },
+  {
+    "function": "geom_line",
+    "package": "ggplot2",
+    "explanation": "Connect observations with straight lines (for time series, trends).",
+    "arguments": []
+  },
+  {
+    "function": "geom_smooth",
+    "package": "ggplot2",
+    "explanation": "Add smoothed conditional mean line with confidence interval.",
+    "arguments": []
+  },
+  {
+    "function": "geom_tile",
+    "package": "ggplot2",
+    "explanation": "Create heatmap by drawing colored tiles/rectangles.",
+    "arguments": []
+  },
+  {
+    "function": "get_stopwords",
+    "package": "stopwords",
+    "explanation": "Get stopword lists for different languages (wrapper around stopwords()).",
+    "arguments": []
+  },
+  {
+    "function": "gsub",
+    "package": "base",
+    "explanation": "Replace all occurrences of a pattern in strings (base R version).",
+    "arguments": []
+  },
+  {
+    "function": "hca_fairytales",
+    "package": "hcandersenr",
+    "explanation": "Load Hans Christian Andersen's fairy tales as a tidy data frame.",
+    "arguments": []
+  },
+  {
+    "function": "hclust",
+    "package": "stats",
+    "explanation": "Perform hierarchical cluster analysis on a distance matrix.",
+    "arguments": []
+  },
+  {
+    "function": "hunspell_stem",
+    "package": "hunspell",
+    "explanation": "Stem words using Hunspell stemmer (language-specific morphological analysis).",
+    "arguments": []
+  },
+  {
+    "function": "if_else",
+    "package": "dplyr",
+    "explanation": "Vectorized if-else: return one value if condition is TRUE, another if FALSE.",
+    "arguments": []
+  },
+  {
+    "function": "install.packages",
+    "package": "utils",
+    "explanation": "Download and install R packages from CRAN or other repositories.",
+    "arguments": []
+  },
+  {
+    "function": "install_keras",
+    "package": "keras",
+    "explanation": "`Keras and TensorFlow will be installed into an r-tensorflow virtual or conda environment.",
+    "arguments": []
+  },
+  {
+    "function": "is.null",
+    "package": "base",
+    "explanation": "Test if an object is NULL.",
+    "arguments": []
+  },
+  {
+    "function": "length",
+    "package": "base",
+    "explanation": "Get the number of elements in a vector or list.",
+    "arguments": []
+  },
+  {
+    "function": "library",
+    "package": "base",
+    "explanation": "Load and attach add-on packages to the R session.",
+    "arguments": []
+  },
+  {
+    "function": "list",
+    "package": "base",
+    "explanation": "Create a list (collection of objects that can have different types).",
+    "arguments": []
+  },
+  {
+    "function": "lm",
+    "package": "stats",
+    "explanation": "Fit linear regression models using least squares.",
+    "arguments": []
+  },
+  {
+    "function": "load",
+    "package": "base",
+    "explanation": "Reload R objects that were saved with save().",
+    "arguments": []
+  },
+  {
+    "function": "log",
+    "package": "base",
+    "explanation": "Calculate natural logarithm (base e).",
+    "arguments": []
+  },
+  {
+    "function": "log10",
+    "package": "base",
+    "explanation": "Calculate base-10 logarithm.",
+    "arguments": []
+  },
+  {
+    "function": "log2",
+    "package": "base",
+    "explanation": "Calculate base-2 logarithm.",
+    "arguments": []
+  },
+  {
+    "function": "map_dfr",
+    "package": "purrr",
+    "explanation": "Apply function to each element and combine results into data frame by rows.",
+    "arguments": []
+  },
+  {
+    "function": "map_int",
+    "package": "purrr",
+    "explanation": "Apply function to each element and return integer vector.",
+    "arguments": []
+  },
+  {
+    "function": "matrix",
+    "package": "base",
+    "explanation": "Create a matrix from a vector by specifying dimensions.",
+    "arguments": []
+  },
+  {
+    "function": "melt",
+    "package": "reshape2",
+    "explanation": "Convert wide data to long format (predecessor to pivot_longer).",
+    "arguments": []
+  },
+  {
+    "function": "names",
+    "package": "base",
+    "explanation": "Get or set names attribute of an object (e.g., column names, list names).",
+    "arguments": []
+  },
+  {
+    "function": "nearest_neighbor",
+    "package": "parsnip",
+    "explanation": "Specify a K-nearest neighbors model for classification or regression.",
+    "arguments": [
+        {"name": "mode", "description": "'classification' or 'regression'"},
+        {"name": "neighbors", "description": "Number of neighbors considered at each prediction"},
+        {"name": "weight_func", "description": "Type of kernel function that weights distances between samples"},
+        {"name": "dist_power", "description": "Parameter for Minkowski distance (1=Manhattan, 2=Euclidean)"}
+        ]
+  },
+  {
+    "function": "nrow",
+    "package": "base",
+    "explanation": "Get number of rows in a data frame or matrix.",
+    "arguments": []
+  },
+  {
+    "function": "percent_format",
+    "package": "scales",
+    "explanation": "Percent formatter: multiply by one hundred and display percent sign. ",
+    "arguments": []
+  },
+  {
+    "function": "plot",
+    "package": "base",
+    "explanation": "Generic function for plotting R objects (base R graphics).",
+    "arguments": []
+  },
+  {
+    "function": "print",
+    "package": "base",
+    "explanation": "Print objects to the console.",
+    "arguments": []
+  },
+  {
+    "function": "read.csv",
+    "package": "utils",
+    "explanation": "Read CSV file into data frame (base R, slower than readr::read_csv).",
+    "arguments": []
+  },
+  {
+    "function": "reorder",
+    "package": "stats",
+    "explanation": "Reorder factor levels based on values of another variable.",
+    "arguments": []
+  },
+  {
+    "function": "rep",
+    "package": "base",
+    "explanation": "Replicate elements of vectors and lists.",
+    "arguments": []
+  },
+  {
+    "function": "row_number",
+    "package": "dplyr",
+    "explanation": "Assign row numbers within groups (1, 2, 3, ...).",
+    "arguments": []
+  },
+  
+  {
+    "function": "sample",
+    "package": "base",
+    "explanation": "Random sampling: take a random sample of specified size from elements.",
+    "arguments": []
+  },
+  {
+    "function": "scale",
+    "package": "base",
+    "explanation": "Center and scale (standardize) numeric columns to mean=0, sd=1.",
+    "arguments": []
+  },
+  {
+    "function": "scale_fill_gradient2",
+    "package": "ggplot2",
+    "explanation": "Create diverging color gradient with a midpoint for fill aesthetic.",
+    "arguments": []
+  },
+  {
+    "function": "scale_x_log10",
+    "package": "ggplot2",
+    "explanation": "Transform x-axis to log10 scale.",
+    "arguments": []
+  },
+  {
+    "function": "scale_y_continuous",
+    "package": "ggplot2",
+    "explanation": "Customize continuous y-axis (breaks, labels, limits).",
+    "arguments": []
+  },
+  {
+    "function": "scale_y_log10",
+    "package": "ggplot2",
+    "explanation": "Transform y-axis to log10 scale.",
+    "arguments": []
+  },
+  {
+    "function": "scale_y_reordered",
+    "package": "tidytext",
+    "explanation": "Scale helper for reorder_within() to fix faceted factor reordering.",
+    "arguments": []
+  },
+  {
+    "function": "separate_wider_delim",
+    "package": "tidyr",
+    "explanation": "Split a character column into multiple columns by delimiter.",
+    "arguments": []
+  },
+  {
+    "function": "slice_sample",
+    "package": "dplyr",
+    "explanation": "Randomly sample n or proportion of rows from data frame.",
+    "arguments": []
+  },
+  {
+    "function": "sort",
+    "package": "base",
+    "explanation": "Sort a vector into ascending or descending order.",
+    "arguments": []
+  },
+  {
+    "function": "spacy_initialize",
+    "package": "spacyr",
+    "explanation": "`Initialize spaCy to call from R.",
+    "arguments": []
+  },
+  {
+    "function": "spacy_parse",
+    "package": "spacyr",
+    "explanation": "The spacy_parse() function calls spaCy to both tokenize and tag the texts, and returns a data.table of the results",
+    "arguments": []
+  },
+  {
+    "function": "stopword_rec",
+    "package": "tm",
+    "explanation": "` A function that returns stopword lists based on different sources or algorithms. Exmples include 'SMART', 'en', 'snowball', 'stopwords_iso', etc.",
+    "arguments": []
+  },
+  {
+    "function": "str_remove_all",
+    "package": "stringstatic",
+    "explanation": "Remove all occurrences of a pattern from strings.",
+    "arguments": [
+      {
+        "name": "string",
+        "description": "Character vector"
+      },
+      {
+        "name": "pattern",
+        "description": "Pattern to remove (regex)"
+      }
+    ]
+  },
+  {
+    "function": "substr",
+    "package": "base",
+    "explanation": "Extract or replace substrings in character vectors by position.",
+    "arguments": []
+  },
+  {
+    "function": "summary",
+    "package": "base",
+    "explanation": "Produce summary statistics (min, max, mean, median, quartiles) for objects.",
+    "arguments": []
+  },
+  {
+    "function": "system.file",
+    "package": "base",
+    "explanation": "Find path to files in installed R packages.",
+    "arguments": []
+  },
+  {
+    "function": "table",
+    "package": "base",
+    "explanation": "Build contingency table of counts for categorical variables.",
+    "arguments": []
+  },
+  {
+    "function": "tail",
+    "package": "utils",
+    "explanation": "Return last n rows or elements of an object.",
+    "arguments": []
+  },
+  {
+    "function": "textstat_dist",
+    "package": "quanteda.textstats",
+    "explanation": "Calculate distance/dissimilarity between documents or features.",
+    "arguments": []
+  },
+  {
+    "function": "textstat_frequency",
+    "package": "quanteda.textstats",
+    "explanation": "Calculate frequency statistics for features in a dfm.",
+    "arguments": []
+  },
+  {
+    "function": "textstat_lexdiv",
+    "package": "quanteda.textstats",
+    "explanation": "Calculate lexical diversity measures (type-token ratio, etc.).",
+    "arguments": []
+  },
+  {
+    "function": "textstat_simil",
+    "package": "quanteda.textstats",
+    "explanation": "Calculate similarity between documents or features.",
+    "arguments": []
+  },
+  {
+    "function": "theme",
+    "package": "ggplot2",
+    "explanation": "Customize non-data plot elements (fonts, backgrounds, grid lines).",
+    "arguments": []
+  },
+  {
+    "function": "tokenize_character",
+    "package": "tokenizers",
+    "explanation": "Split text into individual characters.",
+    "arguments": []
+  },
+  {
+    "function": "tokenize_ngrams",
+    "package": "tokenizers",
+    "explanation": "Split text into n-grams (sequences of n consecutive words).",
+    "arguments": []
+  },
+  {
+    "function": "tokens_select",
+    "package": "quanteda",
+    "explanation": "Select or remove tokens from a tokens object by pattern.",
+    "arguments": []
+  },
+  {
+    "function": "transpose",
+    "package": "purrr",
+    "explanation": "Transpose a list of lists (swap levels of nesting).",
+    "arguments": []
+  },
+  {
+    "function": "unique",
+    "package": "base",
+    "explanation": "Remove duplicate elements from a vector or data frame rows.",
+    "arguments": []
+  },
+  {
+    "function": "with",
+    "package": "base",
+    "explanation": "Evaluate an expression in the context of a data frame.",
+    "arguments": []
+  },
+  {
+    "function": "wordStem",
+    "package": "SnowballC",
+    "explanation": "Stem words using Porter's stemming algorithm.",
+    "arguments": []
+  },
+  {
+    "function": "wordcloud2",
+    "package": "wordcloud2",
+    "explanation": "Create interactive word clouds with custom shapes and colors.",
+    "arguments": []
+  },
+  {
+    "function": "xlab",
+    "package": "ggplot2",
+    "explanation": "Set x-axis label in ggplot2 (shortcut for labs(x = ...)).",
+    "arguments": []
+  },
+  {
+    "function": "xlim",
+    "package": "ggplot2",
+    "explanation": "Set x-axis limits (range).",
+    "arguments": []
+  },
+  {
+    "function": "ylab",
+    "package": "ggplot2",
+    "explanation": "Set y-axis label in ggplot2 (shortcut for labs(y = ...)).",
+    "arguments": []
+  },
+  {
+    "function": "head",
+    "package": "utils",
+    "explanation": "Return the first n rows/elements.",
+    "arguments": []
+  },
+  {
+    "function": "pairwise_pmi",
+    "package": "widyr",
+    "explanation": "Compute Pointwise Mutual Information between items co-occurring within windows. Converts tidy pairwise data to wide matrices to run efficient linear algebra, then returns tidy results.",
+    "arguments": []
+  },
+  {
+    "function": "widely",
+    "package": "widyr",
+    "explanation": "Convert tidy pairwise data to a wide matrix, apply a function, and return tidy results. Converts tidy pairwise data to wide matrices to run efficient linear algebra, then returns tidy results.",
+    "arguments": []
+  },
+  {
+    "function": "widely_svd",
+    "package": "widyr",
+    "explanation": "Compute SVD on pairwise data using a tidy-friendly wrapper. Converts tidy pairwise data to wide matrices to run efficient linear algebra, then returns tidy results.",
+    "arguments": []
+  },
+  {
+    "function": "wordcloud",
+    "package": "wordcloud",
+    "explanation": "Draw a word cloud of terms sized by frequency.",
+    "arguments": []
+  },
+  {
+    "function": "add_model",
+    "package": "workflows",
+    "explanation": "Attach a model specification to a workflow. Workflows keep preprocessing and model spec together, making resampling/tuning reproducible.",
+    "arguments": [
+      {
+        "name": "x",
+        "description": "Workflow object"
+      },
+      {
+        "name": "spec",
+        "description": "Model specification (from parsnip)"
+      }
+    ]
+  },
+  {
+    "function": "add_recipe",
+    "package": "workflows",
+    "explanation": "Attach a preprocessing recipe to a workflow. Workflows keep preprocessing and model spec together, making resampling/tuning reproducible.",
+    "arguments": [
+      {
+        "name": "x",
+        "description": "Workflow object"
+      },
+      {
+        "name": "recipe",
+        "description": "Recipe object"
+      }
+    ]
+  },
+  {
+    "function": "workflow",
+    "package": "workflows",
+    "explanation": "Bundle a preprocessor (recipe) and a model together. Workflows keep preprocessing and model spec together, making resampling/tuning reproducible.",
+    "arguments": []
+  },
+  {
+    "function": "conf_mat_resampled",
+    "package": "yardstick",
+    "explanation": "Aggregate confusion matrices across resamples. Use with `yardstick` metrics; always evaluate on resamples or a test set to avoid optimistic bias.",
+    "arguments": []
+  },
+  {
+    "function": "metric_set",
+    "package": "yardstick",
+    "explanation": "Bundle selected metrics for evaluation (e.g., rmse, rsq). Use with `yardstick` metrics; always evaluate on resamples or a test set to avoid optimistic bias.",
+    "arguments": []
+  },
+  {
+    "function": "roc_curve",
+    "package": "yardstick",
+    "explanation": "Compute ROC curve points from predicted probabilities versus truths. Use with `yardstick` metrics; always evaluate on resamples or a test set to avoid optimistic bias.",
+    "arguments": []
+  }
+]
