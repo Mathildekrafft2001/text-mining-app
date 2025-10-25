@@ -32,9 +32,9 @@ def load_data():
 functions_lookup, functions_data = load_data()
 
 # === Sidebar Navigation ===
-st.sidebar.title("🧭 Navigation")
+st.sidebar.title(" *Menu*")
 page = st.sidebar.radio("Choose a tool:", 
-                        ["🔍 Function Search", "📦 Package Explorer", "🧮 Text Mining Calculator"])
+                        [" Function Search", " Package Explorer", " Text Mining Calculator"])
 
 # ============================================
 # PAGE 1: FUNCTION SEARCH WITH AUTOCOMPLETE
@@ -52,7 +52,7 @@ if page == "🔍 Function Search":
         
         # Search input with autocomplete
         query = st.selectbox(
-            "🔎 Search for a function (start typing):",
+            " Search for a function (start typing):",
             options=[""] + all_functions,
             format_func=lambda x: "Type to search..." if x == "" else x
         )
@@ -60,7 +60,7 @@ if page == "🔍 Function Search":
     with col2:
         # Package filter
         packages = sorted(set(f["package"] for f in functions_data if f.get("package")))
-        selected_package = st.selectbox("📦 Filter by package:", ["All"] + packages)
+        selected_package = st.selectbox(" Filter by package:", ["All"] + packages)
     
     # === Display Results ===
     if query and query != "":
@@ -72,35 +72,35 @@ if page == "🔍 Function Search":
             st.markdown(f"**Package:** `{func_data.get('package', 'unknown')}`")
             
             # Explanation
-            st.markdown("### 📖 Explanation")
+            st.markdown("### Explanation")
             st.info(func_data.get('explanation', 'No explanation available.'))
             
             # Arguments
             arguments = func_data.get('arguments', [])
             if arguments:
-                st.markdown("### 🔧 Arguments")
+                st.markdown("### Arguments")
                 args_df = pd.DataFrame(arguments)
                 st.table(args_df)
             else:
-                st.markdown("### 🔧 Arguments")
+                st.markdown("### Arguments")
                 st.caption("No arguments documented.")
             
             # Code examples
             examples = func_data.get('examples', [])
             if examples:
-                st.markdown("### 💻 Code Examples")
+                st.markdown("### Code Examples")
                 for i, code in enumerate(examples[:5], 1):
                     with st.expander(f"Example {i}"):
                         st.code(code, language='r')
             else:
-                st.markdown("### 💻 Code Examples")
+                st.markdown("### Code Examples")
                 st.caption("No code examples available for this function.")
         else:
             st.warning("Function not found in database.")
     
     elif query == "":
         st.markdown("---")
-        st.markdown("### 💡 Quick Tips")
+        st.markdown("### Quick Tips")
         st.markdown("""
         - Start typing in the search box to see autocomplete suggestions
         - Filter by package to narrow down results
@@ -108,7 +108,7 @@ if page == "🔍 Function Search":
         """)
         
         # Show some popular functions
-        st.markdown("### 🌟 Popular Functions")
+        st.markdown("### Popular Functions")
         popular = ["unnest_tokens", "filter", "mutate", "ggplot", "count", "group_by", 
                    "left_join", "str_detect", "pivot_longer", "summarize"]
         
@@ -121,8 +121,8 @@ if page == "🔍 Function Search":
 # ============================================
 # PAGE 2: PACKAGE EXPLORER
 # ============================================
-elif page == "📦 Package Explorer":
-    st.title("📦 R Package Explorer")
+elif page == " Package Explorer":
+    st.title(" R Package Explorer")
     st.markdown("*Explore R packages and their functions for text mining*")
     
     # Get package statistics
@@ -138,7 +138,7 @@ elif page == "📦 Package Explorer":
     
     # Package selector
     selected_pkg = st.selectbox(
-        "📦 Select a package to explore:",
+        " Select a package to explore:",
         options=[pkg for pkg, _ in sorted_packages],
         format_func=lambda x: f"{x} ({len(package_stats[x])} functions)"
     )
@@ -171,7 +171,7 @@ elif page == "📦 Package Explorer":
             st.info(f"**Description:** {package_descriptions[selected_pkg]}")
         
         # Show functions in package
-        st.markdown("### 🔧 Functions in this package:")
+        st.markdown("### Functions in this package:")
         
         # Create expandable sections for each function
         for func_name in sorted(package_stats[selected_pkg]):
@@ -189,8 +189,8 @@ elif page == "📦 Package Explorer":
 # ============================================
 # PAGE 3: TEXT MINING CALCULATOR
 # ============================================
-elif page == "🧮 Text Mining Calculator":
-    st.title("🧮 Text Mining Calculator")
+elif page == "Text Mining Calculator":
+    st.title("Text Mining Calculator")
     st.markdown("*Calculate TF-IDF and Type-Token Ratio for your text mining projects*")
     
     # Calculator type selector
@@ -198,7 +198,7 @@ elif page == "🧮 Text Mining Calculator":
     
     # === TF-IDF CALCULATOR ===
     if calc_type == "TF-IDF Calculator":
-        st.markdown("## 📊 TF-IDF Calculator")
+        st.markdown("## TF-IDF Calculator")
         st.markdown("""
         **TF-IDF** (Term Frequency - Inverse Document Frequency) measures how important a word is to a document in a collection.
         
@@ -240,7 +240,7 @@ elif page == "🧮 Text Mining Calculator":
         
         if st.button("Calculate TF-IDF", type="primary"):
             if docs_with_term > total_docs:
-                st.error("⚠️ Documents containing term cannot exceed total documents!")
+                st.error(" Documents containing term cannot exceed total documents!")
             else:
                 # Calculate IDF
                 idf = np.log(total_docs / docs_with_term)
@@ -249,8 +249,7 @@ elif page == "🧮 Text Mining Calculator":
                 tf_idf = term_freq * idf
                 
                 # Display results
-                st.markdown("### 📈 Results")
-                
+                st.markdown("###  Results")
                 res_col1, res_col2, res_col3 = st.columns(3)
                 
                 with res_col1:
@@ -263,7 +262,7 @@ elif page == "🧮 Text Mining Calculator":
                     st.metric("TF-IDF", f"{tf_idf:.4f}")
                 
                 # Interpretation
-                st.markdown("### 🎯 Interpretation")
+                st.markdown("###  Interpretation")
                 if tf_idf > 5:
                     st.success(f"**High importance**: This term is very important to this document (appears frequently and is rare in the corpus).")
                 elif tf_idf > 2:
@@ -330,12 +329,12 @@ elif page == "🧮 Text Mining Calculator":
             
             if st.button("Calculate TTR", type="primary"):
                 if num_types > num_tokens:
-                    st.error("⚠️ Unique words cannot exceed total words!")
+                    st.error(" Unique words cannot exceed total words!")
                 else:
                     ttr = num_types / num_tokens
                     
                     # Display results
-                    st.markdown("### 📈 Results")
+                    st.markdown("###  Results")
                     
                     res_col1, res_col2, res_col3 = st.columns(3)
                     
@@ -352,7 +351,7 @@ elif page == "🧮 Text Mining Calculator":
                     st.progress(ttr, text=f"Lexical Diversity: {ttr:.2%}")
                     
                     # Interpretation
-                    st.markdown("### 🎯 Interpretation")
+                    st.markdown("###  Interpretation")
                     if ttr >= 0.7:
                         st.success(f"**Very High Diversity** ({ttr:.2%}): Rich vocabulary, low repetition. Typical of literary texts, academic writing.")
                     elif ttr >= 0.5:
@@ -392,7 +391,7 @@ elif page == "🧮 Text Mining Calculator":
                     ttr = num_types / num_tokens if num_tokens > 0 else 0
                     
                     # Display results
-                    st.markdown("### 📈 Results")
+                    st.markdown("###  Results")
                     
                     res_col1, res_col2, res_col3 = st.columns(3)
                     
@@ -409,7 +408,7 @@ elif page == "🧮 Text Mining Calculator":
                     st.progress(ttr, text=f"Lexical Diversity: {ttr:.2%}")
                     
                     # Interpretation
-                    st.markdown("### 🎯 Interpretation")
+                    st.markdown("###  Interpretation")
                     if ttr >= 0.7:
                         st.success(f"**Very High Diversity** ({ttr:.2%}): Rich vocabulary, low repetition.")
                     elif ttr >= 0.5:
@@ -420,7 +419,7 @@ elif page == "🧮 Text Mining Calculator":
                         st.error(f"**Low Diversity** ({ttr:.2%}): High repetition.")
                     
                     # Show sample of types
-                    with st.expander("🔤 View unique words (Types)"):
+                    with st.expander(" View unique words (Types)"):
                         st.write(", ".join(sorted(list(types))[:50]))
                         if len(types) > 50:
                             st.caption(f"... and {len(types) - 50} more")
@@ -429,12 +428,12 @@ elif page == "🧮 Text Mining Calculator":
 
 # === Footer ===
 st.sidebar.markdown("---")
-st.sidebar.markdown("### 📚 About")
+st.sidebar.markdown("### About")
 st.sidebar.info("""
 This app helps with R text mining:
 - **Search** R functions with autocomplete
 - **Explore** packages and their functions  
 - **Calculate** TF-IDF and Type-Token Ratio
 
-Built for text mining exams 🎓
+Developed by Mathilde Krafft and Claude.
 """)
