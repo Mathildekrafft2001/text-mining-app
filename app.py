@@ -435,5 +435,4 @@ This app helps with R text mining:
 - **Explore** packages and their functions  
 - **Calculate** TF-IDF and Type-Token Ratio
 
-Developed by Mathilde Krafft and Claude.
-""")
+Developed by Mathilde and Claude.""")
