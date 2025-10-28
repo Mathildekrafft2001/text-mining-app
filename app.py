@@ -60,7 +60,7 @@ if st.session_state.get("page") == "Help":
 # ============================================
 # PAGE 1: FUNCTION SEARCH WITH AUTOCOMPLETE
 # ============================================
-if page == "Function Search":
+elif page == "Function Search":
     st.title("R Function Search Engine")
     st.markdown("*Search for R functions with autocomplete, detailed explanations, and code examples*")
     
