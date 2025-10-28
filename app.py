@@ -239,7 +239,7 @@ elif page == "Text Mining Calculator":
                 value=100,
                 help="Total number of documents in the corpus"
             )
-            
+
             docs_with_term = st.number_input(
                 "Documents containing term (n):",
                 min_value=1,
@@ -265,13 +265,13 @@ elif page == "Text Mining Calculator":
                 res_col1, res_col2, res_col3 = st.columns(3)
                 
                 with res_col1:
-                    st.metric("Term Frequency (TF)", f"{tf:.4f}")
+                    st.metric("Term Frequency (TF)", f"{tf:.7f}")
                 
                 with res_col2:
-                    st.metric("IDF", f"{idf:.4f}")
+                    st.metric("IDF", f"{idf:.7f}")
                 
                 with res_col3:
-                    st.metric("TF-IDF", f"{tf_idf:.4f}")
+                    st.metric("TF-IDF", f"{tf_idf:.7f}")
                 
                 # Interpretation
                 st.markdown("### Interpretation")
@@ -290,21 +290,21 @@ elif page == "Text Mining Calculator":
                     ```
                     TF = term_count / total_tokens
                     TF = {term_count} / {total_tokens}
-                    TF = {tf:.4f}
+                    TF = {tf:.7f}
                     ```
 
                     **Step 2:** Calculate IDF
                     ```
                     IDF = ln(N / n)
                     IDF = ln({total_docs} / {docs_with_term})
-                    IDF = {idf:.4f}
+                    IDF = {idf:.7f}
                     ```
                     
                     **Step 3:** Calculate TF-IDF
                     ```
                     TF-IDF = TF × IDF
-                    TF-IDF = {tf} × {idf:.4f}
-                    TF-IDF = {tf_idf:.4f}
+                    TF-IDF = {tf} × {idf:.7f}
+                    TF-IDF = {tf_idf:.7f}
                     ```
                     """)
     
