@@ -4,6 +4,7 @@ import pandas as pd
 import requests
 import numpy as np
 from rapidfuzz import process
+import re
 
 # === Configuration ===
 st.set_page_config(page_title="Text Mining R Helper", layout="wide", page_icon="🧚🏼‍♂️")
