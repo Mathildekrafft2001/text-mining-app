@@ -5,6 +5,7 @@ import requests
 import numpy as np
 from rapidfuzz import process
 import re
+from streamlit_extras.let_it_rain import rain
 
 # === Configuration ===
 st.set_page_config(page_title="Text Mining R Helper", layout="wide", page_icon="🧚🏼‍♂️")
@@ -45,8 +46,13 @@ page = st.sidebar.radio("Choose a tool:",
 if st.session_state.get("page") == "Help":
     st.title(" You got this, you beautiful queen! ")
 
-    # Confetti animation
-    st.snow()
+    # panda animation
+    rain(
+        emoji="🐼",
+        font_size=45,
+        falling_speed=10,
+        animation_length=10,
+    )
 
     # Dancing panda GIF from Giphy
     st.image("https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHd5N3k5aDBja2d6bm1yMzF4bjd3a3V1NTdlanUyMmdlNHIycmx1MSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/lqLNp3dJlWihNuhegE/giphy.gif", width=400)
