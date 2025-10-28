@@ -24,7 +24,8 @@ def load_data():
     for block in codeblocks_data:
         code = block.get("code", "")
         for func_name in functions_lookup:
-            if func_name in code:
+            pattern = rf"\b{re.escape(func_name)}\s*\("
+            if re.search(pattern, code):
                 functions_lookup[func_name].setdefault("examples", []).append(code)
     
     return functions_lookup, functions_data
@@ -35,6 +36,25 @@ functions_lookup, functions_data = load_data()
 st.sidebar.title("Menu")
 page = st.sidebar.radio("Choose a tool:", 
                         ["Function Search", "Package Explorer", "Text Mining Calculator"])
+
+#==============================
+# PAGE 0.5 : HELP PAGE
+#==============================
+if st.session_state.get("page") == "Help":
+    st.title(" You got this, you beautiful queen! ")
+
+    # Confetti animation
+    st.balloons()
+
+    # Dancing panda GIF from Giphy
+    st.image("https://media.giphy.com/media/lJNoBCvQYp7nq/giphy.gif", width=400)
+
+    st.markdown("### Everything is under control! Never give up nanana 🎵 !")
+
+    # Back button
+    if st.button("Back to Function Search"):
+        st.session_state["page"] = "Function Search"
+        st.rerun()
 
 # ============================================
 # PAGE 1: FUNCTION SEARCH WITH AUTOCOMPLETE
@@ -58,10 +78,12 @@ if page == "Function Search":
         )
     
     with col2:
-        # Package filter
-        packages = sorted(set(f["package"] for f in functions_data if f.get("package")))
-        selected_package = st.selectbox("Filter by package:", ["All"] + packages)
-    
+
+        if st.button("Press if you need help"):
+                st.session_state["page"] = "Help"
+                st.rerun()
+
+
     # === Display Results ===
     if query and query != "":
         func_data = functions_lookup.get(query)
@@ -218,14 +240,14 @@ elif page == "Text Mining Calculator":
         
         with col1:
             term_count = st.number_input(
-                "Term count in document:",
+                "Term count in this document:",
                 min_value=0,
                 value=5,
                 help="How many times does the term appear in this document?"
             )
 
             total_tokens = st.number_input(
-                "Total tokens in document:",
+                "Total tokens in this document:",
                 min_value=1,
                 value=100,
                 help="Total number of words/tokens in the document"
