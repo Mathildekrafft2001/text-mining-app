@@ -38,6 +38,10 @@ st.sidebar.title("Menu")
 page = st.sidebar.radio("Choose a tool:", 
                         ["Function Search", "Package Explorer", "Text Mining Calculator"])
 
+# Reset help page if user selects a menu item
+if page in ["Function Search", "Package Explorer", "Text Mining Calculator"]:
+    if st.session_state.get("page") == "Help":
+        st.session_state["page"] = None
 #==============================
 # PAGE 0.5 : HELP PAGE
 #==============================
@@ -45,7 +49,7 @@ if st.session_state.get("page") == "Help":
     st.title(" You got this, you beautiful queen! ")
 
     # Confetti animation
-    st.balloons()
+    st.snow()
 
     # Dancing panda GIF from Giphy
     st.image("https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHd5N3k5aDBja2d6bm1yMzF4bjd3a3V1NTdlanUyMmdlNHIycmx1MSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/lqLNp3dJlWihNuhegE/giphy.gif", width=400)
