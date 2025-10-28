@@ -48,7 +48,7 @@ if st.session_state.get("page") == "Help":
     st.balloons()
 
     # Dancing panda GIF from Giphy
-    st.image("https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExdGh4OTdnMWdmMmtpN3Z5eGZnZHlhaXFiY3hydGprYnM1bDlsMThkeiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/jxODdkVOIGFgc/giphy.gif", width=400)
+    st.image("https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHd5N3k5aDBja2d6bm1yMzF4bjd3a3V1NTdlanUyMmdlNHIycmx1MSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/lqLNp3dJlWihNuhegE/giphy.gif", width=400)
 
     st.markdown("### Everything is under control! Never give up nanana 🎵 !")
 
