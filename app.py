@@ -6,7 +6,7 @@ import numpy as np
 from rapidfuzz import process
 
 # === Configuration ===
-st.set_page_config(page_title="Text Mining R Helper", layout="wide", page_icon="🔍")
+st.set_page_config(page_title="Text Mining R Helper", layout="wide", page_icon="🧚🏼‍♂️")
 
 # === Load Data from GitHub ===
 @st.cache_data
