@@ -217,22 +217,29 @@ elif page == "Text Mining Calculator":
         
         
         with col1:
-                term_count = st.number_input(
-                    "Term count in document:",
-                    min_value=0,
-                    value=5,
-                    help="How many times does the term appear in this document?"
+            term_count = st.number_input(
+                "Term count in document:",
+                min_value=0,
+                value=5,
+                help="How many times does the term appear in this document?"
             )
 
-                total_tokens = st.number_input(
-                    "Total tokens in document:",
-                    min_value=1,
-                    value=100,
-                    help="Total number of words/tokens in the document"
+            total_tokens = st.number_input(
+                "Total tokens in document:",
+                min_value=1,
+                value=100,
+                help="Total number of words/tokens in the document"
             )
 
         
         with col2:
+            total_docs = st.number_input(
+                "Total number of documents (N):",
+                min_value=1,
+                value=100,
+                help="Total number of documents in the corpus"
+            )
+            
             docs_with_term = st.number_input(
                 "Documents containing term (n):",
                 min_value=1,
