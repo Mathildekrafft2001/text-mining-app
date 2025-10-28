@@ -204,7 +204,7 @@ elif page == "Text Mining Calculator":
         
         - **TF** (Term Frequency): How often a term appears in a document
         - **IDF** (Inverse Document Frequency): How rare the term is across all documents
-        - **TF-IDF** = TF × IDF = TF × ln(N / n)
+        - **TF-IDF** = TF × IDF = (term count / total tokens) × ln(N / n)
         
         Where:
         - N = Total number of documents
@@ -215,20 +215,22 @@ elif page == "Text Mining Calculator":
         
         col1, col2 = st.columns(2)
         
+        
         with col1:
-            term_freq = st.number_input(
-                "Term frequency in document (TF):",
-                min_value=0,
-                value=5,
-                help="How many times does the term appear in this document?"
+                term_count = st.number_input(
+                    "Term count in document:",
+                    min_value=0,
+                    value=5,
+                    help="How many times does the term appear in this document?"
             )
-            
-            total_docs = st.number_input(
-                "Total number of documents (N):",
-                min_value=1,
-                value=100,
-                help="Total documents in your corpus"
+
+                total_tokens = st.number_input(
+                    "Total tokens in document:",
+                    min_value=1,
+                    value=100,
+                    help="Total number of words/tokens in the document"
             )
+
         
         with col2:
             docs_with_term = st.number_input(
@@ -242,18 +244,21 @@ elif page == "Text Mining Calculator":
             if docs_with_term > total_docs:
                 st.error("Documents containing term cannot exceed total documents!")
             else:
+                # Calculate TF
+                tf = term_count / total_tokens
+
                 # Calculate IDF
                 idf = np.log(total_docs / docs_with_term)
                 
                 # Calculate TF-IDF
-                tf_idf = term_freq * idf
+                tf_idf = tf * idf
                 
                 # Display results
                 st.markdown("### Results")
                 res_col1, res_col2, res_col3 = st.columns(3)
                 
                 with res_col1:
-                    st.metric("Term Frequency (TF)", f"{term_freq}")
+                    st.metric("Term Frequency (TF)", f"{tf:.4f}")
                 
                 with res_col2:
                     st.metric("IDF", f"{idf:.4f}")
@@ -273,17 +278,25 @@ elif page == "Text Mining Calculator":
                 # Formula breakdown
                 with st.expander("See calculation steps"):
                     st.markdown(f"""
-                    **Step 1:** Calculate IDF
+                    
+                    **Step 1:** Calculate TF
+                    ```
+                    TF = term_count / total_tokens
+                    TF = {term_count} / {total_tokens}
+                    TF = {tf:.4f}
+                    ```
+
+                    **Step 2:** Calculate IDF
                     ```
                     IDF = ln(N / n)
                     IDF = ln({total_docs} / {docs_with_term})
                     IDF = {idf:.4f}
                     ```
                     
-                    **Step 2:** Calculate TF-IDF
+                    **Step 3:** Calculate TF-IDF
                     ```
                     TF-IDF = TF × IDF
-                    TF-IDF = {term_freq} × {idf:.4f}
+                    TF-IDF = {tf} × {idf:.4f}
                     TF-IDF = {tf_idf:.4f}
                     ```
                     """)
