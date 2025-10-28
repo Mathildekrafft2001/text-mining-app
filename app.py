@@ -78,11 +78,14 @@ elif page == "Function Search":
             format_func=lambda x: "Type to search..." if x == "" else x
         )
     
+    
     with col2:
-
+        st.write("")  # Adds a blank line for spacing
+        st.write("")  # Add more if needed
         if st.button("Press if you need help"):
-                st.session_state["page"] = "Help"
-                st.rerun()
+            st.session_state["page"] = "Help"
+            st.rerun()
+
 
 
     # === Display Results ===
