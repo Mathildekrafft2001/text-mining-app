@@ -38,10 +38,7 @@ st.sidebar.title("Menu")
 page = st.sidebar.radio("Choose a tool:", 
                         ["Function Search", "Package Explorer", "Text Mining Calculator"])
 
-# Reset help page if user selects a menu item
-if page in ["Function Search", "Package Explorer", "Text Mining Calculator"]:
-    if st.session_state.get("page") == "Help":
-        st.session_state["page"] = None
+
 #==============================
 # PAGE 0.5 : HELP PAGE
 #==============================
